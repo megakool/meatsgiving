@@ -325,6 +325,14 @@ body.locked .arcade{opacity:.5}
   .game-mini .ghow,.game-flap .ghow,.game-slice .ghow,.game-run .ghow{display:none}
   .legend{margin-bottom:10px}
 }
+/* Short phone screens (iPhone SE / mini with Safari toolbars showing): drop the crossword title, tighten the dock. */
+@media (max-width:599px) and (max-height:640px){
+  .game-mini .gtitle{display:none}
+  .game-mini .topbar{margin-bottom:10px}
+  .gdock .clue .ctext{min-height:62px}
+  .gdock .clue .ctext b{font-size:13.5px}
+  .kb.compact button{height:38px}
+}
 /* arcade */
 .hud{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 auto 8px;font:800 14px/1 var(--font)}
 .hud .btn{padding:6px 10px;font-size:12px}
@@ -844,6 +852,18 @@ function keyboard(onKey, enterLabel = 'Enter', cls = '') {
   return kb;
 }
 const PLAY = {};
+/* Screen height that stays visible even when phone browser toolbars slide back in
+   (the CSS "small viewport" height). Game layouts are sized to this. */
+const svhProbe = el('div'); svhProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none'; document.body.append(svhProbe);
+const screenH = () => Math.min(innerHeight, svhProbe.offsetHeight || innerHeight);
+/* Runs fit() once laid out, again when the width changes (rotation), and whenever the usable height shrinks.
+   It never grows on height alone, so the layout doesn't jump while toolbars come and go. Returns a stop function. */
+function watchFit(fit) {
+  let w = innerWidth, h = screenH();
+  const on = () => { const nh = screenH(); if (innerWidth !== w) { w = innerWidth; h = nh; fit(); } else if (nh < h) { h = nh; fit(); } };
+  addEventListener('resize', on); requestAnimationFrame(() => requestAnimationFrame(fit));
+  return () => removeEventListener('resize', on);
+}
 
 /* ---------- Meatle ---------- */
 const WORDS = ['STEAK', 'ROAST', 'CHUCK', 'FLANK', 'SHANK', 'ROUND', 'PRIME', 'TBONE', 'CHOPS', 'GRILL', 'SMOKE', 'BACON', 'JERKY', 'WAGYU', 'ANGUS', 'KEBAB', 'CURED', 'GRAVY', 'CARVE', 'MEATY', 'JUICY', 'BEEFY', 'BRINE', 'BROTH', 'ASADA', 'RACKS', 'SPARE', 'SALTY', 'BASTE', 'GYROS'];
@@ -867,10 +887,8 @@ PLAY.meatle = (root, win) => {
     if (t && !keep) toastT = setTimeout(() => { msg.textContent = ''; }, 2500);
   }
   /* Size the board so it, the message line and the keyboard fit on one screen. */
-  let fitW = 0;
-  const fit = () => { if (!board.isConnected) return; const maxW = Math.min(root.clientWidth, 330), room = innerHeight - (board.getBoundingClientRect().top + scrollY) - msg.offsetHeight - dock.offsetHeight - 20, w = Math.round(Math.max(Math.min(210, maxW), Math.min(maxW, room / 1.2))); board.style.width = w + 'px'; };
-  const onResize = () => { if (innerWidth !== fitW) { fitW = innerWidth; fit(); } };
-  addEventListener('resize', onResize); requestAnimationFrame(() => requestAnimationFrame(() => { fitW = innerWidth; fit(); }));
+  const fit = () => { if (!board.isConnected) return; const maxW = Math.min(root.clientWidth, 330), room = screenH() - (board.getBoundingClientRect().top + scrollY) - msg.offsetHeight - dock.offsetHeight - 20, w = Math.round(Math.max(Math.min(210, maxW), Math.min(maxW, room / 1.2))); board.style.width = w + 'px'; };
+  const unfit = watchFit(fit);
   function reset() {
     rows = []; cur = ''; over = false; say(''); board.innerHTML = '';
     for (let r = 0; r < 6; r++) { const d = el('div'); for (let c = 0; c < 5; c++) d.append(el('span', 't')); board.append(d); }
@@ -890,7 +908,7 @@ PLAY.meatle = (root, win) => {
     };
     if (instant) fin(); else { busy = true; setTimeout(fin, 5 * 140 + 220); }
   }
-  const api = { stop() { alive = false; clearTimeout(toastT); removeEventListener('resize', onResize); }, key(k) {
+  const api = { stop() { alive = false; clearTimeout(toastT); unfit(); }, key(k) {
     if (over || busy) return;
     if (k === 'DEL') { cur = cur.slice(0, -1); paint(); say(''); }
     else if (k === 'ENTER') {
@@ -993,14 +1011,13 @@ PLAY.mini = (root, win) => {
   const tick = setInterval(() => { if (!over && currentId === 'mini') $('#gLabel').textContent = fmtTime(elapsed()); }, 1000);
   /* Size the grid to the room between its top and the pinned clue bar + keyboard, measured with the longest clue. */
   const longest = Object.values(CLUES).reduce((a, b) => (b.length > a.length ? b : a), '');
-  let lastW = 0;
   function fit() {
-    if (!grid.isConnected || innerWidth === lastW) return; lastW = innerWidth;
+    if (!grid.isConnected) return;
     const tb = q('.ctext b'), keep = tb.textContent; tb.textContent = longest; const dockH = dock.offsetHeight; tb.textContent = keep;
-    const room = innerHeight - (grid.getBoundingClientRect().top + scrollY) - dockH - 14, maxW = Math.min(grid.parentElement.clientWidth, 420);
-    grid.style.width = Math.round(Math.max(Math.min(260, maxW), Math.min(maxW, room))) + 'px';
+    const room = screenH() - (grid.getBoundingClientRect().top + scrollY) - dockH - 14, maxW = Math.min(grid.parentElement.clientWidth, 420);
+    grid.style.width = Math.round(Math.max(Math.min(200, maxW), Math.min(maxW, room))) + 'px';
   }
-  addEventListener('resize', fit); requestAnimationFrame(() => requestAnimationFrame(fit));
+  const unfit = watchFit(fit);
   let toastT = 0;
   const say = (t, keep) => { msg.textContent = t; clearTimeout(toastT); if (t && !keep) toastT = setTimeout(() => { msg.textContent = ''; }, 4000); };
   function draw() {
@@ -1019,7 +1036,7 @@ PLAY.mini = (root, win) => {
     if (cur && !over && grid.isConnected) { const cr = cur.getBoundingClientRect(), dt = dock.getBoundingClientRect().top; if (cr.bottom > dt - 6) scrollBy({ top: cr.bottom - dt + 12, behavior: 'smooth' }); else if (cr.top < 6) scrollBy({ top: cr.top - 12, behavior: 'smooth' }); }
   }
   const api = {
-    stop() { save(); clearInterval(tick); clearTimeout(toastT); removeEventListener('resize', fit); },
+    stop() { save(); clearInterval(tick); clearTimeout(toastT); unfit(); },
     key(k) {
       if (over) return;
       if (k === 'ENTER') { jump(1); draw(); return; }
@@ -1082,25 +1099,23 @@ function stage(root, id) {
   root.innerHTML = `<div class="hud"><span>Score <b data-score>0</b></span><span>Your best <b data-best>${best[id] || '—'}</b></span><button class="btn" type="button" data-snd></button></div><canvas class="stage" aria-label="${GAME[id].name} game"></canvas>`;
   const cv = root.querySelector('canvas'), sc = root.querySelector('[data-score]'), hud = root.querySelector('.hud'), dpr = Math.min(2, window.devicePixelRatio || 1); cv.width = W * dpr; cv.height = H * dpr;
   /* Size the play area so the whole canvas fits on screen below the score row. */
-  let fitW = 0;
   const fit = () => {
     if (!cv.isConnected) return;
-    const land = innerWidth > innerHeight && innerHeight < 500, wrap = root.clientWidth;
+    const vh = screenH(), land = innerWidth > vh && vh < 500, wrap = root.clientWidth;
     /* Phone turned sideways: fit the game under the score row and scroll the header out of the way. */
-    const room = land ? innerHeight - hud.offsetHeight - 22 : innerHeight - (cv.getBoundingClientRect().top + scrollY) - 14;
+    const room = land ? vh - hud.offsetHeight - 22 : vh - (cv.getBoundingClientRect().top + scrollY) - 14;
     const w = Math.round(Math.max(Math.min(land ? 150 : 240, wrap), Math.min(wrap, room * 2 / 3)));
     cv.style.width = w + 'px'; hud.style.maxWidth = w + 'px';
     if (land) hud.scrollIntoView({ block: 'start' });
   };
-  const onResize = () => { if (innerWidth !== fitW) { fitW = innerWidth; fit(); } };
-  addEventListener('resize', onResize); requestAnimationFrame(() => requestAnimationFrame(() => { fitW = innerWidth; fit(); }));
+  const unfit = watchFit(fit);
   const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr); MEATS.concat(VEG).forEach(spr);
   let raf = 0, last = 0, alive = true, P = [], shown = -1;
   const S = { W, H, cv, ctx, shake: 0,
     pos(e) { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; },
     score(v) { if (v !== shown) { shown = v; sc.textContent = v.toLocaleString(); } },
     run(tick) { const loop = t => { if (!alive) return; const dt = Math.min(.034, last ? (t - last) / 1000 : 0); last = t; ctx.save(); if (S.shake > 0) { S.shake -= dt; ctx.translate((Math.random() - .5) * 10, (Math.random() - .5) * 10); } tick(dt); ctx.restore(); raf = requestAnimationFrame(loop); }; raf = requestAnimationFrame(loop); },
-    stop() { alive = false; cancelAnimationFrame(raf); removeEventListener('resize', onResize); },
+    stop() { alive = false; cancelAnimationFrame(raf); unfit(); },
     burst(x, y, col, n = 10, sp = 200) { for (let i = 0; i < n; i++) P.push({ x, y, vx: (Math.random() - .5) * sp * 2, vy: (Math.random() - .8) * sp * 1.5, r: 2 + Math.random() * 4, col, life: .45 + Math.random() * .4, t: 0, g: 700 }); },
     pop(x, y, s, col) { P.push({ x, y, vx: 0, vy: -70, s, col, life: .9, t: 0, g: 0 }); },
     drawFx(dt) { P.forEach(p => { p.t += dt; p.vy += p.g * dt; p.x += p.vx * dt; p.y += p.vy * dt; ctx.globalAlpha = clamp(1 - p.t / p.life, 0, 1);
