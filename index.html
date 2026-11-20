@@ -246,6 +246,8 @@ body.locked .arcade{opacity:.5}
 .ghow{margin:0 0 14px;font-size:16px;font-weight:500;text-wrap:pretty}
 .msg{min-height:22px;margin:10px 0;text-align:center;font-weight:800;text-wrap:pretty}
 .msg.big{font-size:17px;min-height:24px;margin:12px 0 4px}
+.msg.line{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 10px;min-height:40px;margin:6px 0 0;font-size:16px}
+.msg.line button{border:2px solid var(--ink);border-radius:999px;background:var(--red);color:var(--paper);padding:7px 12px;font:800 13px/1 var(--font)}
 /* keyboard */
 .kb{display:flex;flex-direction:column;gap:6px;touch-action:manipulation}
 .kb div{display:flex;gap:4px;justify-content:center}
@@ -261,9 +263,9 @@ body.locked .arcade{opacity:.5}
 .legend span{display:flex;gap:5px;align-items:center}
 .legend i{width:12px;height:12px;border-radius:3px;border:1.5px solid var(--ink)}
 .legend .c{background:var(--red)}.legend .p{background:var(--mustard)}.legend .x{background:var(--ink)}
-.board{display:flex;flex-direction:column;gap:6px;width:min(100%,300px);margin:0 auto}
+.board{display:flex;flex-direction:column;gap:6px;width:min(100%,300px);margin:0 auto;container-type:inline-size}
 .board>div{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.t{aspect-ratio:1;display:grid;place-items:center;border:2.5px solid var(--line);border-radius:10px;font:900 28px/1 var(--font)}
+.t{aspect-ratio:1;display:grid;place-items:center;border:2.5px solid var(--line);border-radius:10px;font:900 28px/1 var(--font);font-size:9.4cqw}
 .t.filled{border-color:var(--ink);background:var(--card);animation:tpop .1s}
 @keyframes tpop{from{transform:scale(1.1)}}
 .t.flip{animation:flip .3s both}
@@ -289,10 +291,12 @@ body.locked .arcade{opacity:.5}
 .clue{margin:12px 0 0;border:2.5px solid var(--ink);border-radius:14px;background:var(--steel);color:var(--paper);padding:10px 12px;min-height:58px}
 .clue .label{display:block;margin-bottom:3px}
 .clue b{font-weight:700}
-.xw-dock{position:sticky;bottom:0;z-index:5;margin:14px -18px 0;padding:8px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--paper) var(--grain);border-top:2px solid var(--ink);box-shadow:0 -8px 18px rgba(42,29,26,.1)}
-.xw-dock .msg{position:absolute;left:12px;right:12px;bottom:calc(100% + 8px);margin:0;min-height:0;background:var(--ink);color:var(--paper);border-radius:12px;padding:10px 12px;font-size:14px;box-shadow:0 4px 12px rgba(42,29,26,.25)}
-.xw-dock .msg:empty{display:none}
-.xw-dock .clue{margin:0 0 8px;display:flex;align-items:stretch;padding:0;min-height:56px;overflow:hidden}
+.gdock{position:sticky;bottom:0;z-index:5;margin:14px -18px 0;padding:8px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--paper) var(--grain);border-top:2px solid var(--ink);box-shadow:0 -8px 18px rgba(42,29,26,.1)}
+.gdock .msg{position:absolute;left:12px;right:12px;bottom:calc(100% + 8px);margin:0;min-height:0;background:var(--ink);color:var(--paper);border-radius:12px;padding:10px 12px;font-size:14px;box-shadow:0 4px 12px rgba(42,29,26,.25)}
+.gdock .msg:empty{display:none}
+.kb.pinned{gap:5px}
+.kb.pinned button{height:46px}
+.gdock .clue{margin:0 0 8px;display:flex;align-items:stretch;padding:0;min-height:56px;overflow:hidden}
 .clue .cnav{flex:none;width:42px;border:0;background:rgba(42,29,26,.18);color:var(--paper);font:900 28px/1 var(--font);padding:0 0 3px}
 .clue .cnav:active{background:rgba(42,29,26,.35)}
 .clue .ctext{flex:1;min-width:0;min-height:76px;border:0;background:none;color:inherit;text-align:left;padding:7px 10px;display:flex;flex-direction:column;justify-content:center;gap:1px}
@@ -315,14 +319,17 @@ body.locked .arcade{opacity:.5}
 .xw-cols li.full button span{text-decoration:line-through;text-decoration-thickness:1.5px}
 #sheet.game-mini{padding-bottom:0}
 @media (max-width:599px){
-  #sheet.game-mini{padding-top:14px}
-  .game-mini .gtitle{font-size:min(30px,7vw);white-space:nowrap;margin:12px 0 10px}
-  .game-mini .ghow{display:none}
+  #sheet{padding-top:14px}
+  #sheet .gtitle{font-size:min(30px,7vw);white-space:nowrap;margin:12px 0 8px}
+  #sheet .ghow{font-size:14px;margin:0 0 10px}
+  .game-mini .ghow,.game-flap .ghow,.game-slice .ghow,.game-run .ghow{display:none}
+  .legend{margin-bottom:10px}
 }
 /* arcade */
-.hud{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px;font:800 14px/1 var(--font)}
+.hud{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 auto 8px;font:800 14px/1 var(--font)}
+.hud .btn{padding:6px 10px;font-size:12px}
 .hud b{font:900 22px/1 var(--font);font-variant-numeric:tabular-nums}
-.stage{display:block;width:100%;aspect-ratio:2/3;border:2.5px solid var(--ink);border-radius:18px;touch-action:none;background:var(--card);user-select:none;-webkit-user-select:none}
+.stage{display:block;width:100%;margin:0 auto;aspect-ratio:2/3;border:2.5px solid var(--ink);border-radius:18px;touch-action:none;background:var(--card);user-select:none;-webkit-user-select:none}
 
 /* ---------- desktop ---------- */
 @media (min-width:900px){
@@ -776,7 +783,7 @@ const sfx = {
   slice: () => Snd.play(1300, .07, 'sawtooth', .035, -1000), pop: (n = 1) => Snd.play(420 + n * 130, .1, 'triangle', .09, 300), key: () => Snd.play(340, .03, 'triangle', .04),
   win: () => [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => Snd.play(f, .16, 'triangle', .08), i * 95))
 };
-function drawSnd() { document.querySelectorAll('[data-snd]').forEach(b => { b.textContent = b.closest('.sh') ? (Snd.on ? 'Sound on' : 'Sound off') : (Snd.on ? 'Sound: on' : 'Sound: off'); b.setAttribute('aria-pressed', Snd.on); }); }
+function drawSnd() { document.querySelectorAll('[data-snd]').forEach(b => { b.textContent = b.closest('.sh, .hud') ? (Snd.on ? 'Sound on' : 'Sound off') : (Snd.on ? 'Sound: on' : 'Sound: off'); b.setAttribute('aria-pressed', Snd.on); }); }
 document.addEventListener('click', e => { if (e.target.closest('[data-snd]')) { Snd.on = !Snd.on; store.set('mg-snd', Snd.on); drawSnd(); sfx.tap(); } });
 
 /* ---------- games: registry + games page ---------- */
@@ -848,13 +855,24 @@ function scoreGuess(g, a) {
 }
 PLAY.meatle = (root, win) => {
   let answer = WORDS[DAY % WORDS.length], daily = true, rows, cur, over, busy = false, alive = true;
-  root.innerHTML = `<div class="legend"><span><i class="c"></i>Right spot</span><span><i class="p"></i>Wrong spot</span><span><i class="x"></i>Not in it</span></div><div class="board" aria-label="Meatle board"></div><p class="msg big" role="status"></p>`;
-  const board = root.querySelector('.board'), msg = root.querySelector('.msg');
-  const kb = keyboard(k => api.key(k)); root.append(kb);
-  const again = el('div', 'btnrow mt', '<button class="btn" type="button">Serve another word</button>'); root.append(again);
-  again.firstChild.onclick = () => { if (busy) return; let w; do w = WORDS[Math.floor(Math.random() * WORDS.length)]; while (w === answer); answer = w; daily = false; reset(); };
+  root.innerHTML = `<div class="legend"><span><i class="c"></i>Right spot</span><span><i class="p"></i>Wrong spot</span><span><i class="x"></i>Not in it</span></div><div class="board" aria-label="Meatle board"></div><p class="msg line" role="status"></p><div class="gdock"></div>`;
+  const board = root.querySelector('.board'), msg = root.querySelector('.msg'), dock = root.querySelector('.gdock');
+  const kb = keyboard(k => api.key(k), 'Enter', 'pinned'); dock.append(kb);
+  function newWord() { if (busy) return; let w; do w = WORDS[Math.floor(Math.random() * WORDS.length)]; while (w === answer); answer = w; daily = false; reset(); }
+  /* Messages sit in a fixed line between the board and the pinned keyboard; short ones fade. */
+  let toastT = 0;
+  function say(t, keep, again) {
+    clearTimeout(toastT); msg.textContent = t || '';
+    if (again) { const b = el('button', '', 'Serve another word'); b.type = 'button'; b.onclick = newWord; msg.append(b); }
+    if (t && !keep) toastT = setTimeout(() => { msg.textContent = ''; }, 2500);
+  }
+  /* Size the board so it, the message line and the keyboard fit on one screen. */
+  let fitW = 0;
+  const fit = () => { if (!board.isConnected) return; const maxW = Math.min(root.clientWidth, 330), room = innerHeight - (board.getBoundingClientRect().top + scrollY) - msg.offsetHeight - dock.offsetHeight - 20, w = Math.round(Math.max(Math.min(210, maxW), Math.min(maxW, room / 1.2))); board.style.width = w + 'px'; };
+  const onResize = () => { if (innerWidth !== fitW) { fitW = innerWidth; fit(); } };
+  addEventListener('resize', onResize); requestAnimationFrame(() => requestAnimationFrame(() => { fitW = innerWidth; fit(); }));
   function reset() {
-    rows = []; cur = ''; over = false; msg.textContent = ''; board.innerHTML = '';
+    rows = []; cur = ''; over = false; say(''); board.innerHTML = '';
     for (let r = 0; r < 6; r++) { const d = el('div'); for (let c = 0; c < 5; c++) d.append(el('span', 't')); board.append(d); }
     kb.querySelectorAll('button').forEach(b => b.classList.remove('c', 'p', 'x'));
   }
@@ -865,20 +883,20 @@ PLAY.meatle = (root, win) => {
     const fin = () => {
       [...g].forEach((ch, i) => { const b = kb.querySelector(`[data-k="${ch}"]`); if (!b) return; const has = k => b.classList.contains(k);
         if (s[i] === 'c') { b.classList.remove('p', 'x'); b.classList.add('c'); } else if (s[i] === 'p' && !has('c')) { b.classList.remove('x'); b.classList.add('p'); } else if (!has('c') && !has('p')) b.classList.add('x'); });
-      if (g === answer) { over = true; msg.textContent = ['First try. Suspicious.', 'Very good.', 'Nicely done.', 'Good.', 'Close one.', 'Just made it.'][rows.length - 1]; if (!instant && alive) { t.classList.add('bounce'); win(); } }
-      else if (rows.length === 6) { over = true; msg.textContent = `It was ${answer}.`; if (!instant && alive) sfx.bad(); }
-      else msg.textContent = '';
+      if (g === answer) { over = true; say(['First try. Suspicious.', 'Very good.', 'Nicely done.', 'Good.', 'Close one.', 'Just made it.'][rows.length - 1], true, true); if (!instant && alive) { t.classList.add('bounce'); win(); } }
+      else if (rows.length === 6) { over = true; say(`It was ${answer}.`, true, true); if (!instant && alive) sfx.bad(); }
+      else say('');
       busy = false; if (daily) store.set('mg-meatle', { day: DAY, rows });
     };
     if (instant) fin(); else { busy = true; setTimeout(fin, 5 * 140 + 220); }
   }
-  const api = { stop() { alive = false; }, key(k) {
+  const api = { stop() { alive = false; clearTimeout(toastT); removeEventListener('resize', onResize); }, key(k) {
     if (over || busy) return;
-    if (k === 'DEL') { cur = cur.slice(0, -1); paint(); msg.textContent = ''; }
+    if (k === 'DEL') { cur = cur.slice(0, -1); paint(); say(''); }
     else if (k === 'ENTER') {
-      if (cur.length < 5) { msg.textContent = 'Five letters, please.'; const t = board.children[rows.length]; t.classList.remove('shake'); void t.offsetWidth; t.classList.add('shake'); sfx.bad(); return; }
+      if (cur.length < 5) { say('Five letters, please.'); const t = board.children[rows.length]; t.classList.remove('shake'); void t.offsetWidth; t.classList.add('shake'); sfx.bad(); return; }
       const g = cur; cur = ''; commit(g, false);
-    } else if (/^[A-Z]$/.test(k) && cur.length < 5) { cur += k; paint(); sfx.key(); msg.textContent = ''; }
+    } else if (/^[A-Z]$/.test(k) && cur.length < 5) { cur += k; paint(); sfx.key(); if (msg.textContent) say(''); }
   } };
   reset();
   const sv = store.get('mg-meatle', null); if (sv && sv.day === DAY && Array.isArray(sv.rows)) sv.rows.slice(0, 6).forEach(g => { if (/^[A-Z]{5}$/.test(g) && !over) commit(g, true); });
@@ -938,10 +956,10 @@ PLAY.mini = (root, win) => {
   root.innerHTML = `<div class="mini" aria-label="Crossword grid"></div>
     <div class="xw-list"><div class="xw-lh"><h3>Clues</h3><button class="btn sm" type="button" data-a="check">Check my work</button></div>
       <div class="xw-cols"><div><span class="label">Across</span><ol data-d="A"></ol></div><div><span class="label">Down</span><ol data-d="D"></ol></div></div></div>
-    <div class="xw-dock"><p class="msg" role="status"></p>
+    <div class="gdock"><p class="msg" role="status"></p>
       <div class="clue"><button type="button" class="cnav" data-a="prev" aria-label="Previous clue">‹</button><button type="button" class="ctext" data-a="flip" aria-label="Switch between across and down"><span class="label"></span><b></b></button><button type="button" class="cnav" data-a="next" aria-label="Next clue">›</button></div>
     </div>`;
-  const q = sel => root.querySelector(sel), grid = q('.mini'), msg = q('.xw-dock .msg'), cells = {}, items = {};
+  const q = sel => root.querySelector(sel), grid = q('.mini'), msg = q('.gdock .msg'), cells = {}, items = {};
   grid.style.gridTemplateColumns = `repeat(${X.C},1fr)`; grid.classList.toggle('big', X.C > 6);
   const at = (d, r, c) => X.at[d + r + ',' + c], word = () => at(s.d, s.r, s.c);
   const isEmpty = ([r, c]) => !fill[r][c], full = w => !w.cells.some(isEmpty), puzzleFull = () => X.words.every(full);
@@ -965,7 +983,7 @@ PLAY.mini = (root, win) => {
     b.onclick = () => { goWord(w); draw(); grid.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
     li.append(b); q(`ol[data-d="${w.dir}"]`).append(li); items[w.dir + w.n] = li;
   });
-  const dock = q('.xw-dock'); dock.append(keyboard(k => api.key(k), 'Next ›', 'compact'));
+  const dock = q('.gdock'); dock.append(keyboard(k => api.key(k), 'Next ›', 'compact'));
   root.addEventListener('click', e => {
     const a = e.target.closest('[data-a]'); if (!a || over && a.dataset.a !== 'check') return;
     if (a.dataset.a === 'prev') jump(-1); else if (a.dataset.a === 'next') jump(1); else if (a.dataset.a === 'flip') flip();
@@ -1061,15 +1079,28 @@ function put(ctx, n, x, y, size, rot) { const i = spr(n); if (!i.complete || !i.
 const rr = (ctx, x, y, w, h, r) => { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); ctx.fill(); ctx.stroke(); };
 function stage(root, id) {
   const W = 360, H = 540;
-  root.innerHTML = `<div class="hud"><span>Score <b data-score>0</b></span><span>Your best <b data-best>${best[id] || '—'}</b></span></div><canvas class="stage" aria-label="${GAME[id].name} game"></canvas><div class="btnrow mt"><button class="btn" type="button" data-snd></button></div>`;
-  const cv = root.querySelector('canvas'), sc = root.querySelector('[data-score]'), dpr = Math.min(2, window.devicePixelRatio || 1); cv.width = W * dpr; cv.height = H * dpr;
+  root.innerHTML = `<div class="hud"><span>Score <b data-score>0</b></span><span>Your best <b data-best>${best[id] || '—'}</b></span><button class="btn" type="button" data-snd></button></div><canvas class="stage" aria-label="${GAME[id].name} game"></canvas>`;
+  const cv = root.querySelector('canvas'), sc = root.querySelector('[data-score]'), hud = root.querySelector('.hud'), dpr = Math.min(2, window.devicePixelRatio || 1); cv.width = W * dpr; cv.height = H * dpr;
+  /* Size the play area so the whole canvas fits on screen below the score row. */
+  let fitW = 0;
+  const fit = () => {
+    if (!cv.isConnected) return;
+    const land = innerWidth > innerHeight && innerHeight < 500, wrap = root.clientWidth;
+    /* Phone turned sideways: fit the game under the score row and scroll the header out of the way. */
+    const room = land ? innerHeight - hud.offsetHeight - 22 : innerHeight - (cv.getBoundingClientRect().top + scrollY) - 14;
+    const w = Math.round(Math.max(Math.min(land ? 150 : 240, wrap), Math.min(wrap, room * 2 / 3)));
+    cv.style.width = w + 'px'; hud.style.maxWidth = w + 'px';
+    if (land) hud.scrollIntoView({ block: 'start' });
+  };
+  const onResize = () => { if (innerWidth !== fitW) { fitW = innerWidth; fit(); } };
+  addEventListener('resize', onResize); requestAnimationFrame(() => requestAnimationFrame(() => { fitW = innerWidth; fit(); }));
   const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr); MEATS.concat(VEG).forEach(spr);
   let raf = 0, last = 0, alive = true, P = [], shown = -1;
   const S = { W, H, cv, ctx, shake: 0,
     pos(e) { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; },
     score(v) { if (v !== shown) { shown = v; sc.textContent = v.toLocaleString(); } },
     run(tick) { const loop = t => { if (!alive) return; const dt = Math.min(.034, last ? (t - last) / 1000 : 0); last = t; ctx.save(); if (S.shake > 0) { S.shake -= dt; ctx.translate((Math.random() - .5) * 10, (Math.random() - .5) * 10); } tick(dt); ctx.restore(); raf = requestAnimationFrame(loop); }; raf = requestAnimationFrame(loop); },
-    stop() { alive = false; cancelAnimationFrame(raf); },
+    stop() { alive = false; cancelAnimationFrame(raf); removeEventListener('resize', onResize); },
     burst(x, y, col, n = 10, sp = 200) { for (let i = 0; i < n; i++) P.push({ x, y, vx: (Math.random() - .5) * sp * 2, vy: (Math.random() - .8) * sp * 1.5, r: 2 + Math.random() * 4, col, life: .45 + Math.random() * .4, t: 0, g: 700 }); },
     pop(x, y, s, col) { P.push({ x, y, vx: 0, vy: -70, s, col, life: .9, t: 0, g: 0 }); },
     drawFx(dt) { P.forEach(p => { p.t += dt; p.vy += p.g * dt; p.x += p.vx * dt; p.y += p.vy * dt; ctx.globalAlpha = clamp(1 - p.t / p.life, 0, 1);
@@ -1152,7 +1183,7 @@ PLAY.flap = (root, win) => {
     S.drawFx(dt);
     if (mode === 'play') S.hud(score, W / 2, 64, 44);
     if (flashT) { ctx.fillStyle = `rgba(251,245,232,${flashT * 3})`; ctx.fillRect(0, 0, W, H); }
-    if (mode === 'ready') S.card('Flappy Meat', 'Tap to take off');
+    if (mode === 'ready') S.card('Flappy Meat', 'Tap to take off', 'Tap to flap. Dodge the forks.');
     if (mode === 'dead' && performance.now() - tDead > 500) S.card(score >= 5 ? 'Well done' : 'Grounded', `Score ${score} · Best ${best.flap || 0}`, 'Tap to fly again', grade(score));
   });
   reset();
@@ -1205,7 +1236,7 @@ PLAY.slice = (root, win) => {
     S.drawFx(dt);
     if (flash) { ctx.fillStyle = `rgba(79,127,58,${flash})`; ctx.fillRect(0, 0, W, H); S.hud('That was a vegetable', W / 2, 140, 24); }
     for (let i = 0; i < 3; i++) { ctx.globalAlpha = i < lives ? 1 : .2; put(ctx, 'steak', W - 28 - i * 34, 30, 30); } ctx.globalAlpha = 1;
-    if (mode === 'ready') S.card('Meat Ninja', 'Swipe across the meat');
+    if (mode === 'ready') S.card('Meat Ninja', 'Swipe across the meat', 'Spare the vegetables.');
     if (mode === 'dead' && performance.now() - tDead > 500) S.card(score >= 15 ? 'Sharp work' : 'Chopped', `Sliced ${score} · Best ${best.slice || 0}`, 'Tap to try again');
   });
   reset();
@@ -1289,7 +1320,7 @@ PLAY.run = (root, win) => {
     S.drawFx(dt);
     if (mode === 'play') { put(ctx, 'bacon', W - 64, 30, 30); S.hud('×' + bacon, W - 14, 40, 22, 'right'); }
     if (mode === 'play' && dist < 90) S.hud('Swipe up to hop the hedges', W / 2, 196, 17);
-    if (mode === 'ready') S.card('Meat Dash', 'Tap to start running');
+    if (mode === 'ready') S.card('Meat Dash', 'Tap to start running', 'Swipe to dodge. Swipe up to hop.');
     if (mode === 'dead' && performance.now() - tDead > 500) S.card(total() >= 400 ? 'Legendary link' : 'Vegetabled', `${Math.floor(dist)} m + ${bacon} bacon = ${total()}`, 'Tap to run again', 'Best: ' + (best.run || 0));
   });
   reset();

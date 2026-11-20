@@ -23,6 +23,12 @@ headline, dek, tagline.
 - **When:** Fri, Nov 27, 2026, 7:00 PM
 - **Where:** 314 S. Medio Dr.
 
+## Phone layout (all games)
+- Phones get a compact one-line game header. Meatle and the crossword pin their keyboard to the bottom and size
+  the board or grid to fit above it.
+- The arcade canvases are sized to fit the screen below the score row (sideways too). On phones the how-to text
+  moves onto each game's start card.
+
 ## Crossword
 - Edit the puzzle with `GRID` (`#` = black square) and `CLUES` (keys like `A3`, `D8`) in `index.html`.
   Numbering and word extents are worked out from the grid.
