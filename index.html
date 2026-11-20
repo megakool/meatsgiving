@@ -188,17 +188,11 @@ a.pill:hover{color:var(--ink);background:var(--card)}
 .lockbar{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:14px;padding:12px 14px;font-size:15px;font-weight:600}
 .lockbar button{flex:none;background:var(--red);color:var(--paper);border:2px solid var(--paper);border-radius:999px;padding:8px 14px;font:800 13px/1 var(--font)}
 .sh{margin-top:24px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.sh+.sh,.arcade+.sh,.puzzles+.sh{margin-top:28px}
+.sh+.sh,.arcade+.sh{margin-top:28px}
 .sh h2{margin:0;font:900 28px/1 var(--font);letter-spacing:-.03em}
 .sh .label{letter-spacing:.04em;white-space:nowrap}
 .sh button.label{border:2px solid var(--ink);border-radius:999px;background:transparent;padding:5px 9px}
-.puzzles{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ptile{aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between;text-align:left;border:2.5px solid var(--ink);border-radius:18px;padding:14px;transition:transform .15s,opacity .2s;min-width:0}
-.ptile:hover{transform:rotate(-1.5deg)}
-.ptile .top{display:flex;justify-content:space-between;align-items:center;gap:6px;font:800 12px/1 var(--font)}
 .done{background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:999px;padding:3px 7px;font:800 11px/1 var(--font);letter-spacing:.04em;text-transform:uppercase;transform:rotate(4deg)}
-.ptile b{display:block;font:900 28px/.92 var(--font);letter-spacing:-.03em}
-.ptile small{display:block;font-size:13px;font-weight:500;line-height:1.25;margin-top:5px}
 .arcade{margin-top:12px;display:flex;flex-direction:column;gap:10px}
 .arow{width:100%;text-align:left;display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;border:2.5px solid var(--ink);border-radius:18px;padding:8px;background:var(--card);transition:background .12s,opacity .2s}
 .arow:hover{background:var(--paper)}
@@ -211,7 +205,7 @@ a.pill:hover{color:var(--ink);background:var(--card)}
 .arow b{display:block;font:900 22px/1 var(--font);letter-spacing:-.02em}
 .arow small{display:block;font-size:14px;line-height:1.3;color:var(--soft);margin-top:4px}
 .arow .done{display:inline-block;margin-left:6px;vertical-align:3px;transform:none}
-body.locked .puzzles,body.locked .arcade{opacity:.5}
+body.locked .arcade{opacity:.5}
 .lbtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:12px 0 10px;padding-bottom:2px}
 .lbtabs::-webkit-scrollbar{display:none}
 .lbtabs button{flex:none;border:2px solid var(--ink);border-radius:999px;background:transparent;padding:7px 12px;font:800 13px/1 var(--font)}
@@ -257,20 +251,6 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
 .board>div.bounce .t{animation:hop .45s}
 .board>div.bounce .t:nth-child(2){animation-delay:.07s}.board>div.bounce .t:nth-child(3){animation-delay:.14s}.board>div.bounce .t:nth-child(4){animation-delay:.21s}.board>div.bounce .t:nth-child(5){animation-delay:.28s}
 @keyframes hop{40%{transform:translateY(-14px)}}
-/* cold cuts */
-.solvedlist{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
-.solved{border:2.5px solid var(--ink);border-radius:12px;padding:10px;text-align:center;animation:pop2 .3s}
-.solved b{display:block;font:900 16px/1.1 var(--font)}
-.solved span{font-size:13px;font-weight:600}
-@keyframes pop2{from{transform:scale(.94)}}
-.cx{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.cx button{aspect-ratio:1.2;min-width:0;border:2.5px solid var(--ink);border-radius:10px;background:var(--card);font:800 13px/1 var(--font);padding:2px;transition:transform .08s;overflow-wrap:anywhere}
-.cx button.long{font-size:11px}
-.cx button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.cx button:active{transform:scale(.95)}
-.lives{display:flex;justify-content:center;align-items:center;gap:8px;margin:14px 0 0;font:700 13px/1 var(--font)}
-.lives i{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink)}
-.lives i.on{background:var(--red)}
 /* mini */
 .mini{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:min(100%,280px);margin:0 auto;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--ink)}
 .mini button,.mini i{aspect-ratio:1;border:0;border-radius:0;padding:0}
@@ -286,37 +266,10 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
 .clue{margin:12px 0 0;border:2.5px solid var(--ink);border-radius:14px;background:var(--steel);color:var(--paper);padding:10px 12px;min-height:58px}
 .clue .label{display:block;margin-bottom:3px}
 .clue b{font-weight:700}
-/* prime cuts */
-.ask{margin:10px 0 0;text-align:center}
-.ask .label{color:var(--soft)}
-.ask b{display:block;font:900 40px/1.05 var(--font);letter-spacing:-.03em;color:var(--red)}
-.cow{width:100%;display:block;margin-top:8px}
-.cow .cut{cursor:pointer;transition:fill .15s}
-.cow .cut:hover{filter:brightness(1.08)}
-.cow > :not(.cut){pointer-events:none}
-.cow .cut.found{fill:var(--herb)!important}
-.cow .cut.miss{fill:var(--mustard)!important}
-.dots{display:flex;gap:5px;justify-content:center;margin:8px 0 0}
-.dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink)}
-.dots i.ok{background:var(--herb)}.dots i.no{background:var(--red)}
-.cpmsg{min-height:44px;margin:12px 0;font-weight:700}
 /* arcade */
 .hud{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px;font:800 14px/1 var(--font)}
 .hud b{font:900 22px/1 var(--font);font-variant-numeric:tabular-nums}
 .stage{display:block;width:100%;aspect-ratio:2/3;border:2.5px solid var(--ink);border-radius:18px;touch-action:none;background:var(--card);user-select:none;-webkit-user-select:none}
-.bar{height:12px;border:2px solid var(--ink);border-radius:999px;background:var(--card);overflow:hidden;margin-bottom:8px}
-.bar i{display:block;height:100%;background:var(--red);width:0;transition:width .3s}
-.m3{position:relative;aspect-ratio:6/7;background:var(--card);border:2.5px solid var(--ink);border-radius:18px;touch-action:none;overflow:hidden;user-select:none;-webkit-user-select:none}
-.pc{position:absolute;left:0;top:0;width:calc(100%/6);height:calc(100%/7);padding:3px;transition:transform .2s cubic-bezier(.3,0,.5,1)}
-.pc span{display:block;width:100%;height:100%;background:var(--paper);border-radius:10px;padding:3px;transition:transform .12s,background .12s}
-.pc svg,.pc img{width:100%;height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
-.pc.sel span{background:var(--mustard);transform:scale(1.1)}
-.pc.pop span{animation:m3pop .23s forwards}
-.pc.hint span{animation:wig .5s 3}
-@keyframes m3pop{40%{transform:scale(1.2)}to{transform:scale(0) rotate(40deg);opacity:0}}
-@keyframes wig{25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
-.float{position:absolute;transform:translate(-50%,-50%);font:900 24px/1 var(--font);color:var(--red);text-shadow:2px 2px 0 var(--card),-2px -2px 0 var(--card),2px -2px 0 var(--card),-2px 2px 0 var(--card);pointer-events:none;animation:floatup .75s forwards;z-index:2}
-@keyframes floatup{to{transform:translate(-50%,-190%);opacity:0}}
 
 /* ---------- desktop ---------- */
 @media (min-width:900px){
@@ -332,7 +285,6 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
   #back{padding-bottom:64px}
   .bp-title{font-size:96px}
   .bp-title span{display:inline}
-  .puzzles{grid-template-columns:repeat(4,1fr);gap:16px}
   .arcade{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .page.narrow{max-width:480px;padding:28px 18px 56px}
 }
@@ -426,7 +378,7 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
       </div>
       <a class="backlink" href="#/back">
         <span class="stripes"><i style="background:var(--red)"></i><i style="background:var(--mustard)"></i><i style="background:var(--steel)"></i><i style="background:var(--herb)"></i></span>
-        <span class="bl"><span><span class="label">The back page</span><b>Eight games and a leaderboard</b></span><i aria-hidden="true">→</i></span>
+        <span class="bl"><span><span class="label">The back page</span><b>Five games and a leaderboard</b></span><i aria-hidden="true">→</i></span>
       </a>
     </div>
   </div>
@@ -444,10 +396,7 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
   <p class="dek">Something to do while the brisket rests.</p>
   <div class="lockbar" id="lockbar"><span>Games are for guests. RSVP to play.</span><button type="button" id="lockBtn">RSVP</button></div>
 
-  <div class="sh"><h2>Puzzles</h2><span class="label">Four courses</span></div>
-  <div class="puzzles" id="puzzles"></div>
-
-  <div class="sh"><h2>The arcade</h2><button type="button" class="label" data-snd></button></div>
+  <div class="sh"><h2>Games</h2><button type="button" class="label" data-snd></button></div>
   <div class="arcade" id="arcade"></div>
 
   <div class="sh"><h2>Leaderboard</h2><span class="label">Top 10</span></div>
@@ -498,7 +447,7 @@ const PHOTOS = [
   { src: 'captcha/avocado-toast.webp', meat: 0, alt: 'Avocado toast' }
 ];
 /* Optional gameplay stills for the arcade cards, e.g. { flap: 'stills/flap.jpg' } */
-const STILLS = { flap: 'art/card-stills/flap-steak.svg', slice: 'art/card-stills/cleaver-frenzy.svg', match: 'art/card-stills/butchers-match.svg', run: 'art/card-stills/sausage-dash.svg' };
+const STILLS = { meatle: 'art/card-stills/meatle.svg', mini: 'art/card-stills/crossword.svg', flap: 'art/card-stills/flap-steak.svg', slice: 'art/card-stills/cleaver-frenzy.svg', match: 'art/card-stills/butchers-match.svg', run: 'art/card-stills/sausage-dash.svg' };
 /* Shared guest list, messages and scores. On claude.ai the page uses its built-in database.
    When you host this file yourself, put a Firebase Realtime Database URL here,
    e.g. "https://your-project-default-rtdb.firebaseio.com" */
@@ -629,8 +578,8 @@ async function connect() {
   } catch {}
 }
 
-const LB = [['flap', 'Flap Steak'], ['slice', 'Cleaver Frenzy'], ['match', "Butcher's Match"], ['run', 'Sausage Dash'], ['cow', 'Prime Cuts']];
-let lbTab = 'flap', social = 'who', editing = !Me.name, postErr = '';
+const LB = [['xw', 'Crossword', 1], ['flap', 'Flappy Meat'], ['slice', 'Meat Ninja'], ['run', 'Meat Dash']];
+let lbTab = 'xw', social = 'who', editing = !Me.name, postErr = '';
 const draft = { status: Me.status || 'yes', n: Me.n || 1 };
 const isOff = () => Net.mode === 'local' || Net.mode === 'readonly';
 function avatar(name) { const a = el('span', 'av'), [bg, fg] = avFor(name); a.textContent = name[0].toUpperCase(); a.style.background = bg; a.style.color = fg; a.setAttribute('aria-hidden', 'true'); return a; }
@@ -701,11 +650,12 @@ function drawPostHint() {
 function drawLB() {
   const T = $('#lbTabs'); T.innerHTML = '';
   LB.forEach(([id, name]) => { const b = el('button', '', name); b.type = 'button'; b.setAttribute('aria-pressed', id === lbTab); b.onclick = () => { lbTab = id; drawLB(); }; T.append(b); });
-  const rows = everyone().map(g => ({ g, v: num(g.s[lbTab], 0, 999999) })).filter(r => r.v > 0).sort((a, b) => b.v - a.v).slice(0, 10), ol = $('#lb'); ol.innerHTML = '';
-  if (!rows.length) ol.append(el('li', 'empty', 'No scores yet. Go set one.'));
+  const low = (LB.find(t => t[0] === lbTab) || [])[2];
+  const rows = everyone().map(g => ({ g, v: num(g.s[lbTab], 0, 999999) })).filter(r => r.v > 0).sort((a, b) => low ? a.v - b.v : b.v - a.v).slice(0, 10), ol = $('#lb'); ol.innerHTML = '';
+  if (!rows.length) ol.append(el('li', 'empty', low ? 'No times yet. Solve the crossword to get on the board.' : 'No scores yet. Go set one.'));
   rows.forEach((r, i) => {
     const you = r.g.id === Net.id, li = el('li', you ? 'you' : ''), k = el('span', 'rk'), n = el('span', 'ln'), v = el('span', 'sc');
-    k.textContent = i + 1; n.textContent = r.g.name + (you ? ' (you)' : ''); v.textContent = lbTab === 'cow' ? r.v + ' / 9' : r.v.toLocaleString();
+    k.textContent = i + 1; n.textContent = r.g.name + (you ? ' (you)' : ''); v.textContent = low ? fmtTime(r.v) : r.v.toLocaleString();
     li.append(k, n, v); ol.append(li);
   });
 }
@@ -768,40 +718,38 @@ document.addEventListener('click', e => { if (e.target.closest('[data-snd]')) { 
 /* ---------- games: registry + back page ---------- */
 const done = new Set(store.get('mg-done', []));
 const best = store.get('mg-best', {});
+const fmtTime = v => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`;
+/* Crossword: fastest solve time in seconds (lower is better). */
+function setBestTime(id, v) {
+  if (v > 0 && (!best[id] || v < best[id])) { best[id] = v; store.set('mg-best', best); Me.s[id] = v; push(); }
+  return best[id] || 0;
+}
 function setBest(id, v) {
   if (v > (best[id] || 0)) { best[id] = v; store.set('mg-best', best); Me.s[id] = v; push(); }
   const b = $('#gBody [data-best]'); if (b && currentId === id) b.textContent = best[id] || '—';
   return best[id] || 0;
 }
 const GAMES = [
-  { id: 'meatle', n: '01', name: 'Meatle', blurb: 'The five-letter meat word. Six tries.', how: 'Guess the five-letter meat word in six tries.', bg: 'var(--red)', fg: 'var(--paper)' },
-  { id: 'cuts', n: '02', name: 'Cold Cuts', blurb: 'Sixteen words, four groups.', how: 'Find four groups of four. Some words fit more than one.', bg: 'var(--mustard)', fg: 'var(--ink)' },
-  { id: 'mini', n: '03', name: 'Meatsgiving Crossword', blurb: 'The Friendsgiving lore edition.', how: 'Tap a square for its clue. Tap it again to switch direction. Enter jumps to the next clue.', bg: 'var(--steel)', fg: 'var(--paper)' },
-  { id: 'cow', n: '04', name: 'Prime Cuts', blurb: 'Find the cut on the cow.', how: '', bg: 'var(--herb)', fg: 'var(--paper)' },
-  { id: 'flap', arcade: 1, n: '05', name: 'Flap Steak', blurb: 'Tap to fly a steak through a gauntlet of forks.', how: 'Tap to flap. Fly the steak through the forks. The gaps tighten as you go.', bg: 'var(--red)' },
-  { id: 'slice', arcade: 1, n: '06', name: 'Cleaver Frenzy', blurb: 'Swipe to slice flying meat. Spare the vegetables.', how: 'Swipe to slice the meat. Three in one swipe is a combo. Dropping a cut or slicing a vegetable costs a life.', bg: 'var(--mustard)' },
-  { id: 'match', arcade: 1, n: '07', name: "Butcher's Match", blurb: 'Line up three meats in a row. Twenty moves.', how: 'Swap two neighbors to line up three or more of the same meat. Twenty moves, goal 800.', bg: 'var(--steel)' },
-  { id: 'run', arcade: 1, n: '08', name: 'Sausage Dash', blurb: 'An endless three-lane sprint from the salad bar.', how: 'Swipe left and right to dodge the vegetables. Swipe up to hop the lettuce hedges. Bacon is worth 25.', bg: 'var(--herb)' }
+  { id: 'meatle', n: '01', name: 'Meatle', blurb: 'The five-letter meat word. Six tries.', how: 'Guess the five-letter meat word in six tries.', bg: 'var(--red)' },
+  { id: 'mini', n: '02', name: 'Meatsgiving Crossword', blurb: 'The Friendsgiving lore edition. Fastest time wins.', how: 'Tap a square for its clue. Tap it again to switch direction. Enter jumps to the next clue.', bg: 'var(--steel)' },
+  { id: 'flap', arcade: 1, n: '03', name: 'Flappy Meat', blurb: 'Tap to fly a steak through a gauntlet of forks.', how: 'Tap to flap. Fly the steak through the forks. The gaps tighten as you go.', bg: 'var(--red)' },
+  { id: 'slice', arcade: 1, n: '04', name: 'Meat Ninja', blurb: 'Swipe to slice flying meat. Spare the vegetables.', how: 'Swipe to slice the meat. Three in one swipe is a combo. Dropping a cut or slicing a vegetable costs a life.', bg: 'var(--mustard)' },
+  { id: 'run', arcade: 1, n: '05', name: 'Meat Dash', blurb: 'An endless three-lane sprint from the salad bar.', how: 'Swipe left and right to dodge the vegetables. Swipe up to hop the lettuce hedges. Bacon is worth 25.', bg: 'var(--herb)' }
 ];
 const GAME = Object.fromEntries(GAMES.map(g => [g.id, g]));
 function drawBack() {
-  const P = $('#puzzles'), A = $('#arcade'); P.innerHTML = A.innerHTML = '';
+  const A = $('#arcade'); A.innerHTML = '';
   GAMES.forEach(g => {
     const chip = done.has(g.id) ? '<span class="done">Done</span>' : '';
-    if (!g.arcade) {
-      const b = el('button', 'ptile', `<span class="top"><span>${g.n}</span>${chip}</span><span><b>${g.name}</b><small>${g.blurb}</small></span>`);
-      b.type = 'button'; b.style.background = g.bg; b.style.color = g.fg; b.onclick = () => nav('#/play/' + g.id); P.append(b);
-    } else {
-      const still = STILLS[g.id] ? `<img src="${STILLS[g.id]}" alt="">` : '';
-      const b = el('button', 'arow', `<span class="still${still ? ' art' : ''}" style="background:${g.bg}">${still}<span>${g.n}</span></span><span><b>${g.name}${chip}</b><small>${g.blurb}</small></span>`);
-      b.type = 'button'; b.onclick = () => nav('#/play/' + g.id); A.append(b);
-    }
+    const still = STILLS[g.id] ? `<img src="${STILLS[g.id]}" alt="">` : '';
+    const b = el('button', 'arow', `<span class="still${still ? ' art' : ''}" style="background:${g.bg}">${still}<span>${g.n}</span></span><span><b>${g.name}${chip}</b><small>${g.blurb}</small></span>`);
+    b.type = 'button'; b.onclick = () => nav('#/play/' + g.id); A.append(b);
   });
   drawSnd();
 }
 function openGame(id) {
   stopGame(); const g = GAME[id];
-  $('#gLabel').textContent = g.label ? g.label() : g.arcade ? 'Arcade' : 'Puzzle ' + g.n;
+  $('#gLabel').textContent = 'Game ' + g.n;
   $('#gTitle').textContent = g.name; $('#gHow').textContent = g.how; $('#gHow').hidden = !g.how;
   const body = $('#gBody'); body.innerHTML = ''; currentId = id; show('sheet');
   current = PLAY[id](body, () => { sfx.win(); done.add(id); store.set('mg-done', [...done]); });
@@ -869,45 +817,6 @@ PLAY.meatle = (root, win) => {
   reset();
   const sv = store.get('mg-meatle', null); if (sv && sv.day === DAY && Array.isArray(sv.rows)) sv.rows.slice(0, 6).forEach(g => { if (/^[A-Z]{5}$/.test(g) && !over) commit(g, true); });
   return api;
-};
-
-/* ---------- Cold Cuts ---------- */
-const CC_COLORS = [['var(--mustard)', 'var(--ink)'], ['var(--herb)', 'var(--paper)'], ['var(--steel)', 'var(--paper)'], ['var(--red)', 'var(--paper)']];
-const PUZZLES = [
-  [{ name: 'How would you like it?', words: ['RARE', 'MEDIUM', 'WELL', 'BLUE'] }, { name: 'Primal cuts of beef', words: ['CHUCK', 'ROUND', 'PLATE', 'SHANK'] }, { name: 'USDA beef grades', words: ['CHOICE', 'SELECT', 'STANDARD', 'CUTTER'] }, { name: '___ ribs', words: ['PRIME', 'SHORT', 'SPARE', 'BACK'] }],
-  [{ name: 'BBQ sides', words: ['FRIES', 'SLAW', 'BEANS', 'PICKLES'] }, { name: 'Sausages and deli meats', words: ['CHORIZO', 'SALAMI', 'KIELBASA', 'BOLOGNA'] }, { name: 'Barbecue country', words: ['TEXAS', 'MEMPHIS', 'CAROLINA', 'ALABAMA'] }, { name: '___ steak', words: ['SKIRT', 'HANGER', 'CUBE', 'MINUTE'] }],
-  [{ name: 'Ways to cook it', words: ['BRAISE', 'SMOKE', 'SEAR', 'GRILL'] }, { name: 'On a burger', words: ['CHEESE', 'ONION', 'PICKLE', 'BUN'] }, { name: 'Cattle breeds', words: ['ANGUS', 'WAGYU', 'HEREFORD', 'LONGHORN'] }, { name: 'Cuts of lamb', words: ['RACK', 'LEG', 'LOIN', 'NECK'] }]
-].map(p => p.map((g, i) => ({ ...g, col: CC_COLORS[i] })));
-PLAY.cuts = (root, win) => {
-  let pi = DAY % PUZZLES.length, GR, left, sel, lives, solved, tried;
-  root.innerHTML = `<div class="solvedlist"></div><div class="cx"></div><div class="lives"></div><p class="msg" role="status"></p>
-    <div class="btnrow"><button class="btn" data-a="shuf" type="button">Shuffle</button><button class="btn" data-a="clear" type="button">Clear</button><button class="btn red" data-a="go" type="button">Slice it</button><button class="btn red" data-a="new" type="button" hidden>Next puzzle</button></div>`;
-  const q = s => root.querySelector(s), msg = q('.msg');
-  function draw(shake) {
-    q('.solvedlist').innerHTML = '';
-    solved.forEach(g => { const d = el('div', 'solved', `<b></b><span></span>`); d.style.background = g.col[0]; d.style.color = g.col[1]; d.querySelector('b').textContent = g.name; d.querySelector('span').textContent = g.words.join(', '); q('.solvedlist').append(d); });
-    const cx = q('.cx'); cx.innerHTML = '';
-    left.forEach(w => { const b = el('button', (w.length > 6 ? 'long' : '') + (shake && sel.has(w) ? ' shake' : ''), w); b.type = 'button'; b.setAttribute('aria-pressed', sel.has(w)); b.onclick = () => { if (sel.has(w)) sel.delete(w); else if (sel.size < 4) sel.add(w); else return; sfx.key(); msg.textContent = ''; draw(); }; cx.append(b); });
-    q('.lives').innerHTML = left.length ? 'Mistakes left ' + [0, 1, 2, 3].map(i => `<i class="${i < lives ? 'on' : ''}"></i>`).join('') : '';
-    const fin = !left.length; ['shuf', 'clear', 'go'].forEach(a => { q(`[data-a=${a}]`).hidden = fin; }); q('[data-a=new]').hidden = !fin;
-  }
-  function reset() { GR = PUZZLES[pi]; left = shuffle(GR.flatMap(g => g.words)); sel = new Set(); lives = 4; solved = []; tried = new Set(); msg.textContent = ''; draw(); }
-  q('[data-a=shuf]').onclick = () => { left = shuffle(left); draw(); };
-  q('[data-a=clear]').onclick = () => { sel.clear(); draw(); };
-  q('[data-a=new]').onclick = () => { pi = (pi + 1) % PUZZLES.length; reset(); };
-  q('[data-a=go]').onclick = () => {
-    if (sel.size !== 4) { msg.textContent = 'Pick four words.'; return; }
-    const key = [...sel].sort().join(), top = GR.map(g => [g, g.words.filter(w => sel.has(w)).length]).sort((a, b) => b[1] - a[1])[0];
-    if (top[1] === 4) {
-      solved.push(top[0]); left = left.filter(w => !sel.has(w)); sel.clear(); sfx.pop(solved.length);
-      msg.textContent = left.length ? '' : lives === 4 ? 'All four, no mistakes. Nicely carved.' : 'All four. Nicely carved.'; if (!left.length) win(); draw(); return;
-    }
-    if (tried.has(key)) { msg.textContent = 'Already tried that one.'; draw(true); return; }
-    tried.add(key); lives--; sfx.bad(); msg.textContent = top[1] === 3 ? 'One away.' : 'Not a group.';
-    if (!lives) { msg.textContent = 'Out of mistakes. Here’s the full platter.'; GR.forEach(g => { if (!solved.includes(g)) solved.push(g); }); left = []; sel.clear(); draw(); return; }
-    draw(true);
-  };
-  reset(); return {};
 };
 
 /* ---------- Meatsgiving Crossword ---------- */
@@ -992,64 +901,11 @@ PLAY.mini = (root, win) => {
     cells[s.r + ',' + s.c].classList.remove('wrong');
     if (k === 'DEL') { if (!fill[s.r][s.c]) step(-1); fill[s.r][s.c] = ''; cells[s.r + ',' + s.c].classList.remove('wrong'); }
     else if (/^[A-Z]$/.test(k)) { fill[s.r][s.c] = k; step(1); sfx.key(); } else return;
-    if (fill.every((row, r) => row.join('') === GRID[r])) { over = true; const sec = Math.round((Date.now() - t0) / 1000); msg.textContent = `Solved in ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}. You know the lore.`; win(); }
+    if (fill.every((row, r) => row.join('') === GRID[r])) { over = true; const sec = Math.round((Date.now() - t0) / 1000); const prev = best.xw; setBestTime('xw', sec); msg.textContent = `Solved in ${fmtTime(sec)}. ` + (!prev || sec < prev ? 'New best time. It’s on the leaderboard.' : `Your best is ${fmtTime(prev)}.`); win(); }
     else msg.textContent = fill.every(row => row.every(x => x)) ? 'Full grid, but something’s off.' : '';
     draw();
   } };
   draw(); return api;
-};
-
-/* ---------- Prime Cuts ---------- */
-const CUTS = [
-  ['Chuck', ['50,30 132,30 132,108 50,108'], 'Shoulder. Pot roast and burger country.'],
-  ['Rib', ['132,30 176,30 176,104 132,108'], 'Home of the ribeye and prime rib.'],
-  ['Short loin', ['176,30 226,30 226,104 176,104'], 'T-bones, porterhouses, strip steaks.'],
-  ['Sirloin', ['226,30 264,30 264,108 226,104'], 'Lean, beefy, great on the grill.'],
-  ['Round', ['264,30 320,30 320,170 264,170'], 'The rump. Roasts and jerky.'],
-  ['Brisket', ['50,108 132,108 132,170 50,170'], 'The chest. Low and slow.'],
-  ['Plate', ['132,108 176,104 200,104 200,170 132,170'], 'Belly. Short ribs and skirt steak.'],
-  ['Flank', ['200,104 226,104 264,108 264,170 200,170'], 'Lean belly cut. Slice against the grain.'],
-  ['Shank', ['86,154 114,154 112,200 88,200', '268,154 294,154 292,200 270,200'], 'The legs. Tough until braised for hours.']
-];
-/* Cow artwork from art/prime-cuts/cow.svg, inlined so each cut stays tappable. */
-const cowSVG = () => `<svg class="cow" viewBox="0 0 340 210" role="group" aria-label="Diagram of a cow">
-<path d="M287 59q36-12 38 18t-1 36" fill="none" stroke="#2a1d1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M324 109c-6 2-9 8-9 14 5 3 11 0 13-7 1-3-1-6-4-7Z" fill="#2a1d1a"/>
-<path d="M109 143h19l3 38 8 11v6h-28l-3-10Z" fill="#a13a30" stroke="#2a1d1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M267 143h17l6 37 9 11v7h-26l-6-10Z" fill="#a13a30" stroke="#2a1d1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M91 58C80 48 71 44 62 47L52 40 36 43l-9 13-16 8c-7 4-7 20 2 25l16 3 18-4 22 27 19 3Z" fill="#c8352b" stroke="#2a1d1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M63 51c-3-11-7-15-16-17-1 7 3 12 10 16m-17-6c-1-8-5-13-11-16-2 8 0 13 4 19" fill="#f6deb3" stroke="#2a1d1a" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M64 53c-8-7-16-5-20 1 8 7 16 7 21 2Z" fill="#ed927d" stroke="#2a1d1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M9 66c4-5 15-5 22-5l2 26-8 4-12-2C6 85 5 72 9 66Z" fill="#e98d7a" stroke="#2a1d1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<ellipse cx="16" cy="76" rx="2.2" ry="1.6" fill="#2a1d1a"/>
-<ellipse cx="38" cy="58" rx="2.5" ry="3" fill="#2a1d1a"/>
-<path d="m11 83 11 2" fill="none" stroke="#2a1d1a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="cut-chuck" class="cut" data-i="0" d="M70 53Q94 36 130 43L136 103Q111 101 83 112Q78 96 69 84Z" fill="#cf5347" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-rib" class="cut" data-i="1" d="M130 43Q152 47 172 46L176 108 136 103Z" fill="#e46d5b" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-short-loin" class="cut" data-i="2" d="M172 46L217 44 220 109 176 108Z" fill="#c8352b" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-sirloin" class="cut" data-i="3" d="M217 44L256 41 253 106 220 109Z" fill="#db6959" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-round" class="cut" data-i="4" d="M256 41Q293 39 305 57Q317 77 307 108L291 150 266 155 253 106Z" fill="#bb4639" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-brisket" class="cut" data-i="5" d="M83 112Q111 101 136 103L142 145Q128 149 116 151L91 154Q84 136 83 112Z" fill="#bd4b3c" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-plate" class="cut" data-i="6" d="M136 103L176 108 196 108 200 144Q174 149 142 145Z" fill="#ed927d" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-flank" class="cut" data-i="7" d="M196 108L220 109 253 106 266 155Q254 143 242 142L200 144Z" fill="#dc6953" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-shank" class="cut" data-i="8" d="M91 154L116 151 110 181 117 192 117 199 88 199 87 191Z M266 155L291 150 285 180 293 192 293 199 265 199 263 191Z" fill="#d25d48" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><g pointer-events="none"><path d="m90 187-2 5v7h29v-7l-4-5m152 0-2 5 2 7h28v-7l-4-5" fill="none" stroke="#2a1d1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M89 191h27v7H89Zm176 0h27v7h-27Z" fill="#2a1d1a"/>
-</g>
-</svg>`;
-PLAY.cow = (root, win) => {
-  let order, at, res, pick;
-  root.innerHTML = `<div class="ask"><span class="label"></span><b></b></div>${cowSVG()}<div class="dots">${'<i></i>'.repeat(9)}</div><p class="msg cpmsg" role="status"></p><div class="btnrow"><button class="btn red" type="button" hidden></button></div>`;
-  const q = s => root.querySelector(s), msg = q('.msg'), nextB = q('.btnrow button');
-  function draw() {
-    const want = order[at];
-    q('.ask .label').textContent = `Round ${at + 1} of 9 · Tap the`; q('.ask b').textContent = CUTS[want][0];
-    root.querySelectorAll('.cut').forEach(p => { const i = +p.dataset.i; p.classList.toggle('found', pick !== null && i === want); p.classList.toggle('miss', pick !== null && i === pick && i !== want); });
-    root.querySelectorAll('.dots i').forEach((d, i) => { d.className = res[i] === true ? 'ok' : res[i] === false ? 'no' : ''; });
-    nextB.hidden = pick === null; nextB.textContent = at >= 8 ? `${res.filter(Boolean).length} of 9. Play again` : 'Next cut';
-  }
-  function reset() { order = shuffle([...Array(9).keys()]); at = 0; res = []; pick = null; msg.textContent = ''; draw(); }
-  q('.cow').addEventListener('click', e => {
-    const p = e.target.closest('.cut'); if (!p || pick !== null) return;
-    const i = +p.dataset.i, want = order[at], good = i === want; pick = i; res.push(good); good ? sfx.point() : sfx.bad();
-    msg.textContent = (good ? 'Correct. ' : `That was the ${CUTS[i][0].toLowerCase()}. `) + CUTS[want][0] + ': ' + CUTS[want][2];
-    if (at >= 8) { const sc = res.filter(Boolean).length; setBest('cow', sc); if (sc >= 6) win(); }
-    draw(); nextB.focus({ preventScroll: true });
-  });
-  nextB.onclick = () => { if (at >= 8) return reset(); at++; pick = null; msg.textContent = ''; draw(); };
-  reset();
-  return { key(k) { if ((k === 'ENTER' || k === 'TAP') && pick !== null) nextB.click(); } };
 };
 
 /* ================= ARCADE ================= */
@@ -1115,7 +971,7 @@ function stage(root, id) {
   return S;
 }
 
-/* ---------- Flap Steak ---------- */
+/* ---------- Flappy Meat ---------- */
 PLAY.flap = (root, win) => {
   const S = stage(root, 'flap'), { ctx, W, H } = S, G = H - 46, X = 96, PW = 56;
   let mode, y, vy, pipes, score, tDead = 0, scroll = 0, clock = 0, flashT = 0;
@@ -1178,14 +1034,14 @@ PLAY.flap = (root, win) => {
     S.drawFx(dt);
     if (mode === 'play') S.hud(score, W / 2, 64, 44);
     if (flashT) { ctx.fillStyle = `rgba(251,245,232,${flashT * 3})`; ctx.fillRect(0, 0, W, H); }
-    if (mode === 'ready') S.card('Flap Steak', 'Tap to take off');
+    if (mode === 'ready') S.card('Flappy Meat', 'Tap to take off');
     if (mode === 'dead' && performance.now() - tDead > 500) S.card(score >= 5 ? 'Well done' : 'Grounded', `Score ${score} · Best ${best.flap || 0}`, 'Tap to fly again', grade(score));
   });
   reset();
   return { stop: S.stop, key(k) { if (k === 'TAP' || k === 'ENTER') flap(); } };
 };
 
-/* ---------- Cleaver Frenzy ---------- */
+/* ---------- Meat Ninja ---------- */
 PLAY.slice = (root, win) => {
   const S = stage(root, 'slice'), { ctx, W, H } = S;
   const grain = Array.from({ length: 30 }, () => ({ x: Math.random() * W, y: Math.random() * H, l: 30 + Math.random() * 100 }));
@@ -1231,69 +1087,14 @@ PLAY.slice = (root, win) => {
     S.drawFx(dt);
     if (flash) { ctx.fillStyle = `rgba(79,127,58,${flash})`; ctx.fillRect(0, 0, W, H); S.hud('That was a vegetable', W / 2, 140, 24); }
     for (let i = 0; i < 3; i++) { ctx.globalAlpha = i < lives ? 1 : .2; put(ctx, 'steak', W - 28 - i * 34, 30, 30); } ctx.globalAlpha = 1;
-    if (mode === 'ready') S.card('Cleaver Frenzy', 'Swipe across the meat');
+    if (mode === 'ready') S.card('Meat Ninja', 'Swipe across the meat');
     if (mode === 'dead' && performance.now() - tDead > 500) S.card(score >= 15 ? 'Sharp work' : 'Chopped', `Sliced ${score} · Best ${best.slice || 0}`, 'Tap to try again');
   });
   reset();
   return { stop: S.stop };
 };
 
-/* ---------- Butcher's Match ---------- */
-PLAY.match = (root, win) => {
-  const C = 6, R = 7, GOAL = 800, wait = ms => new Promise(r => setTimeout(r, ms));
-  let g = [], sel = null, busy = false, moves, score, start = null, alive = true, hintT = 0;
-  root.innerHTML = `<div class="hud"><span>Score <b data-score>0</b></span><span>Moves <b data-moves>20</b></span><span>Your best <b data-best>${best.match || '—'}</b></span></div><div class="bar" aria-hidden="true"><i></i></div><div class="m3" aria-label="Game board"></div><p class="msg" role="status"></p><div class="btnrow"><button class="btn red" type="button" hidden>Play again</button><button class="btn" type="button" data-snd></button></div>`;
-  const board = root.querySelector('.m3'), msg = root.querySelector('.msg'), again = root.querySelector('.btnrow button');
-  const rnd = () => MEATS[Math.floor(Math.random() * MEATS.length)];
-  const place = (p, r, c) => { p.r = r; p.c = c; p.el.style.transform = `translate(${c * 100}%,${r * 100}%)`; };
-  function mk(t, r, c, from) { const e = el('div', 'pc', `<span>${sprImg(t)}</span>`), p = { t, el: e }; board.append(e); e.style.transition = 'none'; place(p, from, c); void e.offsetWidth; e.style.transition = ''; place(p, r, c); return p; }
-  const types = () => g.map(row => row.map(p => p ? p.t : null));
-  function matchSet(t) {
-    const m = new Set();
-    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) { const v = t[r][c]; if (!v) continue;
-      if (c < C - 2 && v === t[r][c + 1] && v === t[r][c + 2]) [0, 1, 2].forEach(i => m.add(r * C + c + i));
-      if (r < R - 2 && v === t[r + 1][c] && v === t[r + 2][c]) [0, 1, 2].forEach(i => m.add((r + i) * C + c)); }
-    return m;
-  }
-  function findMove(t) { for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) for (const [dr, dc] of [[0, 1], [1, 0]]) { const r2 = r + dr, c2 = c + dc; if (r2 >= R || c2 >= C) continue; let x = t[r][c]; t[r][c] = t[r2][c2]; t[r2][c2] = x; const ok = matchSet(t).size > 0; x = t[r][c]; t[r][c] = t[r2][c2]; t[r2][c2] = x; if (ok) return [{ r, c }, { r: r2, c: c2 }]; } return null; }
-  function fresh() { let t; do t = Array.from({ length: R }, () => Array.from({ length: C }, rnd)); while (matchSet(t).size || !findMove(t)); board.querySelectorAll('.pc').forEach(e => e.remove()); g = t.map((row, r) => row.map((v, c) => mk(v, r, c, r - R))); }
-  function hud() { root.querySelector('[data-score]').textContent = score.toLocaleString(); root.querySelector('[data-moves]').textContent = moves; root.querySelector('.bar i').style.width = Math.min(100, score / GOAL * 100) + '%'; }
-  function swap(a, b) { const pa = g[a.r][a.c], pb = g[b.r][b.c]; g[a.r][a.c] = pb; g[b.r][b.c] = pa; place(pb, a.r, a.c); place(pa, b.r, b.c); }
-  function setSel(s) { if (sel && g[sel.r][sel.c]) g[sel.r][sel.c].el.classList.remove('sel'); sel = s; if (s) g[s.r][s.c].el.classList.add('sel'); }
-  function clearHint() { clearTimeout(hintT); board.querySelectorAll('.hint').forEach(e => e.classList.remove('hint')); }
-  function armHint() { clearHint(); hintT = setTimeout(() => { if (busy || !alive) return; const mv = findMove(types()); if (mv) g[mv[0].r][mv[0].c].el.classList.add('hint'); }, 6000); }
-  function float(s, fx, fy) { const f = el('div', 'float', s); f.style.left = fx * 100 + '%'; f.style.top = fy * 100 + '%'; board.append(f); setTimeout(() => f.remove(), 750); }
-  async function trySwap(a, b) {
-    busy = true; clearHint(); setSel(null); swap(a, b); sfx.tap(); await wait(210); let m = matchSet(types());
-    if (!m.size) { swap(a, b); sfx.bad(); msg.textContent = 'No match there.'; await wait(210); busy = false; armHint(); return; }
-    moves--; let chain = 0; msg.textContent = '';
-    while (m.size && alive) {
-      chain++; const pts = m.size * 10 * chain + (m.size >= 4 ? 20 : 0) + (m.size >= 5 ? 30 : 0); score += pts; sfx.pop(chain);
-      if (chain > 1) msg.textContent = ['', '', 'Double chop.', 'Triple chop.', 'Meat sweats.'][Math.min(chain, 4)]; else if (m.size >= 4) msg.textContent = 'Thick cut.';
-      let sr = 0, sc = 0; m.forEach(k => { const r = Math.floor(k / C), c = k % C; sr += r; sc += c; g[r][c].el.classList.add('pop'); });
-      float('+' + pts, (sc / m.size + .5) / C, (sr / m.size + .5) / R); hud(); await wait(240);
-      m.forEach(k => { const r = Math.floor(k / C), c = k % C; g[r][c].el.remove(); g[r][c] = null; });
-      for (let c = 0; c < C; c++) { let w = R - 1; for (let r = R - 1; r >= 0; r--) if (g[r][c]) { if (w !== r) { g[w][c] = g[r][c]; g[r][c] = null; place(g[w][c], w, c); } w--; } const n = w + 1; for (let r = w; r >= 0; r--) g[r][c] = mk(rnd(), r, c, r - n); }
-      await wait(300); m = matchSet(types());
-    }
-    if (!alive) return; hud();
-    if (moves <= 0) { const stars = score >= GOAL * 1.5 ? 3 : score >= GOAL ? 2 : score >= GOAL * .6 ? 1 : 0; msg.textContent = (score >= GOAL ? 'Order up. ' : 'Out of moves. ') + `${score} points ` + '★'.repeat(stars) + '☆'.repeat(3 - stars); setBest('match', score); if (score >= GOAL) win(); again.hidden = false; return; }
-    if (!findMove(types())) { msg.textContent = 'No moves left. Restocking the counter.'; await wait(700); fresh(); }
-    busy = false; armHint();
-  }
-  const cell = e => { const b = board.getBoundingClientRect(), c = Math.floor((e.clientX - b.left) / b.width * C), r = Math.floor((e.clientY - b.top) / b.height * R); return r >= 0 && r < R && c >= 0 && c < C ? { r, c, x: e.clientX, y: e.clientY } : null; };
-  board.addEventListener('pointerdown', e => { if (busy || moves <= 0) return; start = cell(e); try { board.setPointerCapture(e.pointerId); } catch {} });
-  board.addEventListener('pointerup', e => {
-    if (busy || !start) return; const s = start, dx = e.clientX - s.x, dy = e.clientY - s.y; start = null;
-    if (Math.max(Math.abs(dx), Math.abs(dy)) > 16) { const b = Math.abs(dx) > Math.abs(dy) ? { r: s.r, c: s.c + Math.sign(dx) } : { r: s.r + Math.sign(dy), c: s.c }; if (b.r >= 0 && b.r < R && b.c >= 0 && b.c < C) trySwap(s, b); return; }
-    if (sel && Math.abs(sel.r - s.r) + Math.abs(sel.c - s.c) === 1) trySwap(sel, s); else { setSel(sel && sel.r === s.r && sel.c === s.c ? null : { r: s.r, c: s.c }); sfx.tap(); }
-  });
-  function reset() { moves = 20; score = 0; sel = null; busy = false; again.hidden = true; msg.textContent = ''; fresh(); hud(); armHint(); }
-  again.onclick = reset; reset();
-  return { stop() { alive = false; clearTimeout(hintT); } };
-};
-
-/* ---------- Sausage Dash ---------- */
+/* ---------- Meat Dash ---------- */
 PLAY.run = (root, win) => {
   const S = stage(root, 'run'), { ctx, W, H } = S, HZ = 140, PY = 452;
   let mode, lane, px, things, dist, v, spawnT, off, bacon, tDead = 0, p0 = null, clock = 0, jy, jv;
@@ -1370,7 +1171,7 @@ PLAY.run = (root, win) => {
     S.drawFx(dt);
     if (mode === 'play') { put(ctx, 'bacon', W - 64, 30, 30); S.hud('×' + bacon, W - 14, 40, 22, 'right'); }
     if (mode === 'play' && dist < 90) S.hud('Swipe up to hop the hedges', W / 2, 196, 17);
-    if (mode === 'ready') S.card('Sausage Dash', 'Tap to start running');
+    if (mode === 'ready') S.card('Meat Dash', 'Tap to start running');
     if (mode === 'dead' && performance.now() - tDead > 500) S.card(total() >= 400 ? 'Legendary link' : 'Vegetabled', `${Math.floor(dist)} m + ${bacon} bacon = ${total()}`, 'Tap to run again', 'Best: ' + (best.run || 0));
   });
   reset();
