@@ -297,6 +297,9 @@ body.locked .arcade{opacity:.5}
 @media (max-width:359px){
   .tabs2 button{font-size:13px;gap:4px;padding:11px 3px}
   .seg button{font-size:14px}
+  .counter .label{white-space:normal}
+  .counter div{gap:6px}
+  .counter button{width:40px;height:40px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -456,7 +459,7 @@ const PHOTOS = [
   { src: 'captcha/avocado-toast.webp', meat: 0, alt: 'Avocado toast' }
 ];
 /* Optional gameplay stills for the arcade cards, e.g. { flap: 'stills/flap.jpg' } */
-const STILLS = { meatle: 'art/card-stills/meatle.svg', mini: 'art/card-stills/crossword.svg', flap: 'art/card-stills/flap-steak.svg', slice: 'art/card-stills/cleaver-frenzy.svg', match: 'art/card-stills/butchers-match.svg', run: 'art/card-stills/sausage-dash.svg' };
+const STILLS = { meatle: 'art/card-stills/meatle.svg', mini: 'art/card-stills/crossword.svg', flap: 'art/card-stills/flap-steak.svg', slice: 'art/card-stills/cleaver-frenzy.svg', run: 'art/card-stills/sausage-dash.svg' };
 /* Shared guest list, messages and scores. On claude.ai the page uses its built-in database.
    When you host this file yourself, put a Firebase Realtime Database URL here,
    e.g. "https://your-project-default-rtdb.firebaseio.com" */
@@ -729,9 +732,10 @@ document.addEventListener('click', e => { if (e.target.closest('[data-snd]')) { 
 const done = new Set(store.get('mg-done', []));
 const best = store.get('mg-best', {});
 const fmtTime = v => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`;
-/* Crossword: fastest solve time in seconds (lower is better). */
-function setBestTime(id, v) {
-  if (v > 0 && (!best[id] || v < best[id])) { best[id] = v; store.set('mg-best', best); Me.s[id] = v; push(); }
+/* Crossword: solve time in seconds (lower is better). Only a guest's first solve counts,
+   so replaying with the answers already known can't climb the leaderboard. */
+function setFirstTime(id, v) {
+  if (v > 0 && !best[id]) { best[id] = v; store.set('mg-best', best); Me.s[id] = v; push(); }
   return best[id] || 0;
 }
 function setBest(id, v) {
@@ -741,7 +745,7 @@ function setBest(id, v) {
 }
 const GAMES = [
   { id: 'meatle', n: '01', name: 'Meatle', blurb: 'The five-letter meat word. Six tries.', how: 'Guess the five-letter meat word in six tries.', bg: 'var(--red)' },
-  { id: 'mini', n: '02', name: 'Meatsgiving Crossword', blurb: 'The Friendsgiving lore edition. Fastest time wins.', how: 'Tap a square for its clue. Tap it again to switch direction. Enter jumps to the next clue.', bg: 'var(--steel)' },
+  { id: 'mini', n: '02', name: 'Meatsgiving Crossword', blurb: 'The Friendsgiving lore edition. Fastest first solve wins.', how: 'Tap a square for its clue. Tap it again to switch direction. Enter jumps to the next clue.', bg: 'var(--steel)' },
   { id: 'flap', arcade: 1, n: '03', name: 'Flappy Meat', blurb: 'Tap to fly a steak through a gauntlet of forks.', how: 'Tap to flap. Fly the steak through the forks. The gaps tighten as you go.', bg: 'var(--red)' },
   { id: 'slice', arcade: 1, n: '04', name: 'Meat Ninja', blurb: 'Swipe to slice flying meat. Spare the vegetables.', how: 'Swipe to slice the meat. Three in one swipe is a combo. Dropping a cut or slicing a vegetable costs a life.', bg: 'var(--mustard)' },
   { id: 'run', arcade: 1, n: '05', name: 'Meat Dash', blurb: 'An endless three-lane sprint from the salad bar.', how: 'Swipe left and right to dodge the vegetables. Swipe up to hop the lettuce hedges. Bacon is worth 25.', bg: 'var(--herb)' }
@@ -911,7 +915,7 @@ PLAY.mini = (root, win) => {
     cells[s.r + ',' + s.c].classList.remove('wrong');
     if (k === 'DEL') { if (!fill[s.r][s.c]) step(-1); fill[s.r][s.c] = ''; cells[s.r + ',' + s.c].classList.remove('wrong'); }
     else if (/^[A-Z]$/.test(k)) { fill[s.r][s.c] = k; step(1); sfx.key(); } else return;
-    if (fill.every((row, r) => row.join('') === GRID[r])) { over = true; const sec = Math.round((Date.now() - t0) / 1000); const prev = best.xw; setBestTime('xw', sec); msg.textContent = `Solved in ${fmtTime(sec)}. ` + (!prev || sec < prev ? 'New best time. It’s on the leaderboard.' : `Your best is ${fmtTime(prev)}.`); win(); }
+    if (fill.every((row, r) => row.join('') === GRID[r])) { over = true; const sec = Math.round((Date.now() - t0) / 1000); const prev = best.xw; setFirstTime('xw', sec); msg.textContent = `Solved in ${fmtTime(sec)}. ` + (!prev ? 'Your time is on the leaderboard.' : `Only your first solve counts: ${fmtTime(prev)}.`); win(); }
     else msg.textContent = fill.every(row => row.every(x => x)) ? 'Full grid, but something’s off.' : '';
     draw();
   } };
@@ -936,7 +940,6 @@ const SPRITE = {
   tofu: `<rect x="9" y="12" width="30" height="24" rx="5" fill="#efe3d0" ${K}/><path d="M15 19h6M27 27h6" stroke="#d6c6ad" stroke-width="2.5" stroke-linecap="round"/>`
 };
 const MEATS = ['steak', 'bacon', 'sausage', 'ribs', 'ham', 'meatball'], VEG = ['broccoli', 'carrot', 'leaf', 'tofu'];
-const sprSvg = n => `<svg viewBox="0 0 48 48" aria-hidden="true">${SPRITE[n]}</svg>`;
 /* Artwork files in art/. Each loads once; if a file is missing, the drawn fallback is used instead. */
 const SPR = {}, ART = {};
 const inlineSpr = n => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="144" height="144">${SPRITE[n]}</svg>`);
@@ -944,7 +947,6 @@ function spr(n) {
   if (!SPR[n]) { const i = new Image(); i.onerror = () => { i.onerror = null; i.src = inlineSpr(n); }; i.src = 'art/sprites/' + n + '.svg'; SPR[n] = i; }
   return SPR[n];
 }
-const sprImg = n => `<img src="art/sprites/${n}.svg" alt="" draggable="false" onerror="this.outerHTML=sprSvg('${n}')">`;
 function art(p) { if (!ART[p]) { const i = new Image(); i.src = 'art/' + p; ART[p] = i; } return ART[p]; }
 const ready = i => i.complete && i.naturalWidth > 0;
 /* Draws art file p at (x, y, w, h); returns false if it isn't available, so the caller can draw its fallback. */

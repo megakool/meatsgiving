@@ -12,7 +12,7 @@ Rebuilt from the Claude Design project "App redesign and voice refinement"
   (shrinks to a confirmation bar after you RSVP), and a tabbed panel for
   Who's coming / The Chopping Block. On desktop it splits into two columns.
 - **Games page** (`#/games`; old `#/back` links still work): one Games list (Meatle, Meatsgiving Crossword, Flappy Meat, Meat Ninja, Meat Dash)
-  and a leaderboard (fastest crossword time, plus high scores for the three arcade games). Locked until you RSVP.
+  and a leaderboard (fastest first crossword solve, plus high scores for the three arcade games). Locked until you RSVP.
 - **Game screens** (`#/play/<id>`): ids are `meatle`, `mini` (crossword), `flap`, `slice`, `run`.
 - The URL hash tracks the page, so the phone's back button works.
 
@@ -32,11 +32,12 @@ To add or swap one, drop the file in `captcha/` and add a line such as
 - **Meat:** prime rib, grilled steaks, braised beef, churrasco, pulled pork, glazed beef, sliced steak, Korean beef
 - **Decoys:** chickpea stew, black bean burger, pasta, arugula salad, cucumber salad, crispy tofu, silken tofu, avocado toast
 
-## Slots waiting on assets
-Each slot is a config value right under `EVENT`:
+## Game art
+- `art/` holds the arcade art pack: sprites, card stills, and backgrounds/frames per game.
+  `STILLS` (under `EVENT`) maps each game to its card picture. Each piece falls back to a drawn
+  version if its file is missing.
+- `art/card-stills/butchers-match.svg` and `art/prime-cuts/cow.svg` belong to removed games and are unused.
 
-1. **`STILLS`**: optional gameplay stills for the arcade cards, e.g. `{ flap: 'stills/flap.jpg' }`.
-   Without them, each card shows a numbered color block.
 ## Live site
 - **Hosting:** Render Static Site at https://meatsgiving.onrender.com. It deploys from `main` on every push (publish directory `.`, no build command).
 - **Shared data:** RSVPs, posts and scores are stored in the Firebase Realtime Database at
