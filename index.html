@@ -262,8 +262,8 @@ body.locked .arcade{opacity:.5}
 .legend i{width:12px;height:12px;border-radius:3px;border:1.5px solid var(--ink)}
 .legend .c{background:var(--red)}.legend .p{background:var(--mustard)}.legend .x{background:var(--ink)}
 .board{display:flex;flex-direction:column;gap:6px;width:min(100%,300px);margin:0 auto;container-type:inline-size}
-.board>div{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.t{aspect-ratio:1;display:grid;place-items:center;border:2.5px solid var(--line);border-radius:10px;font:900 28px/1 var(--font);font-size:9.4cqw}
+.board>div{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.t{aspect-ratio:1;min-width:0;display:grid;place-items:center;border:2.5px solid var(--line);border-radius:10px;font:900 28px/1 var(--font);font-size:9.4cqw}
 .t.filled{border-color:var(--ink);background:var(--card);animation:tpop .1s}
 @keyframes tpop{from{transform:scale(1.1)}}
 .t.flip{animation:flip .3s both}
@@ -272,8 +272,8 @@ body.locked .arcade{opacity:.5}
 .board>div.bounce .t:nth-child(2){animation-delay:.07s}.board>div.bounce .t:nth-child(3){animation-delay:.14s}.board>div.bounce .t:nth-child(4){animation-delay:.21s}.board>div.bounce .t:nth-child(5){animation-delay:.28s}
 @keyframes hop{40%{transform:translateY(-14px)}}
 /* mini */
-.mini{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:min(100%,280px);margin:0 auto;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--ink)}
-.mini button,.mini i{aspect-ratio:1;border:0;border-radius:0;padding:0}
+.mini{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;width:min(100%,280px);margin:0 auto;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--ink)}
+.mini button,.mini i{aspect-ratio:1;min-width:0;min-height:0;border:0;border-radius:0;padding:0;margin:0}
 .mini i{background:var(--ink)}
 .mini button{position:relative;background:var(--card);font:900 26px/1 var(--font)}
 .mini button.word{background:var(--sky)}
@@ -282,9 +282,10 @@ body.locked .arcade{opacity:.5}
 .mini sup{position:absolute;top:3px;left:4px;font:700 10px/1 var(--font)}
 .mini{touch-action:manipulation}
 /* Crossword: script sizes the grid so it, the clue bar and the keyboard all fit on one screen. */
-.mini.big{width:min(100%,420px);container-type:inline-size;gap:1.5px;border-radius:8px}
-.mini.big button{font-size:clamp(14px,5vw,22px);font-size:6.2cqw}
-.mini.big sup{top:2px;left:2px;font-size:clamp(7px,2.2vw,9px);font-size:2.4cqw}
+/* Square size (--cell) is set in pixels by the script so every browser draws exactly C equal columns. */
+.mini.big{width:min(100%,420px);gap:1.5px;border-radius:8px}
+.mini.big button{font-size:calc(var(--cell,32px) * .58)}
+.mini.big sup{top:2px;left:2px;font-size:max(7px,calc(var(--cell,32px) * .25))}
 .mini.solved button{background:#e2ecd7}
 .clue{margin:12px 0 0;border:2.5px solid var(--ink);border-radius:14px;background:var(--steel);color:var(--paper);padding:10px 12px;min-height:58px}
 .clue .label{display:block;margin-bottom:3px}
@@ -974,7 +975,7 @@ PLAY.mini = (root, win) => {
       <div class="clue"><button type="button" class="cnav" data-a="prev" aria-label="Previous clue">‹</button><button type="button" class="ctext" data-a="flip" aria-label="Switch between across and down"><span class="label"></span><b></b></button><button type="button" class="cnav" data-a="next" aria-label="Next clue">›</button></div>
     </div>`;
   const q = sel => root.querySelector(sel), grid = q('.mini'), msg = q('.gdock .msg'), cells = {}, items = {};
-  grid.style.gridTemplateColumns = `repeat(${X.C},1fr)`; grid.classList.toggle('big', X.C > 6);
+  grid.style.gridTemplateColumns = `repeat(${X.C},minmax(0,1fr))`; grid.classList.toggle('big', X.C > 6);
   const at = (d, r, c) => X.at[d + r + ',' + c], word = () => at(s.d, s.r, s.c);
   const isEmpty = ([r, c]) => !fill[r][c], full = w => !w.cells.some(isEmpty), puzzleFull = () => X.words.every(full);
   const pos = w => w.cells.findIndex(([r, c]) => r === s.r && c === s.c);
@@ -1011,7 +1012,11 @@ PLAY.mini = (root, win) => {
     if (!grid.isConnected) return;
     const tb = q('.ctext b'), keep = tb.textContent; tb.textContent = longest; const dockH = dock.offsetHeight; tb.textContent = keep;
     const room = screenH() - (grid.getBoundingClientRect().top + scrollY) - dockH - 14, maxW = Math.min(grid.parentElement.clientWidth, 420);
-    grid.style.width = Math.round(Math.max(Math.min(200, maxW), Math.min(maxW, room))) + 'px';
+    const w = Math.round(Math.max(Math.min(200, maxW), Math.min(maxW, room))), GAP = 1.5, BORDER = 2.5;
+    /* Exact square size so the columns can't overflow (Safari sized 1fr columns wider and clipped the last one). */
+    const cell = Math.floor(((w - 2 * BORDER - GAP * (X.C - 1)) / X.C) * 100) / 100;
+    grid.style.width = (cell * X.C + GAP * (X.C - 1) + 2 * BORDER) + 'px';
+    grid.style.gridTemplateColumns = `repeat(${X.C},${cell}px)`; grid.style.gridAutoRows = cell + 'px'; grid.style.setProperty('--cell', cell + 'px');
   }
   const unfit = watchFit(fit);
   let toastT = 0;
