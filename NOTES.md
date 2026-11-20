@@ -10,7 +10,7 @@ Rebuilt from the Claude Design project "App redesign and voice refinement"
 - **Gate:** one captcha round, "select all images with meat".
 - **Front page:** masthead, "Return of the Meat", one red invitation card, the reply card
   (shrinks to a confirmation bar after you RSVP), and a tabbed panel for
-  Who's coming / The Chopping Block. On desktop it splits into two columns.
+  Who's coming / Messages. On desktop it splits into two columns.
 - **Games page** (`#/games`; old `#/back` links still work): one Games list (Meatle, Meatsgiving Crossword, Flappy Meat, Meat Ninja, Meat Dash)
   and a leaderboard (fastest first crossword solve, plus high scores for the three arcade games). Locked until you RSVP.
 - **Game screens** (`#/play/<id>`): ids are `meatle`, `mini` (crossword), `flap`, `slice`, `run`.
@@ -54,6 +54,12 @@ To add or swap one, drop the file in `captcha/` and add a line such as
 - The preview tags in `<head>` point at `https://meatsgiving.org/`. If the domain ever changes, update the
   `og:url` and `og:image` addresses.
 - The preview image shows the date and time. If they change, regenerate it.
+
+## Starting fresh
+To wipe the guest list, messages and leaderboard: delete every entry under `guests` in the Firebase console
+(Realtime Database → Data), **and** bump `DATA_RESET` in `index.html` and push. The bump clears each guest's
+saved RSVP and scores on their own device; without it, returning guests re-send their old entry.
+Last reset: Nov 20, 2026 (`DATA_RESET = 1`).
 
 ## Known limitations / open items
 - **Copy to confirm** (from the design notes): "It will mostly be ignored", "Return of the Meat".

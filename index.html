@@ -388,7 +388,7 @@ body.locked .arcade{opacity:.5}
       <div class="social">
         <div class="tabs2" role="tablist">
           <button type="button" role="tab" id="tWho" aria-controls="whoPane">Who’s coming<em id="tWhoN">0</em></button>
-          <button type="button" role="tab" id="tChop" aria-controls="chopPane">Chopping Block<em id="tChopN">0</em></button>
+          <button type="button" role="tab" id="tChop" aria-controls="chopPane">Messages<em id="tChopN">0</em></button>
         </div>
         <div id="whoPane" role="tabpanel" aria-labelledby="tWho">
           <div class="label gcount" id="gCount"></div>
@@ -478,6 +478,9 @@ const STILLS = { meatle: 'art/card-stills/meatle.svg', mini: 'art/card-stills/cr
    When you host this file yourself, put a Firebase Realtime Database URL here,
    e.g. "https://your-project-default-rtdb.firebaseio.com" */
 const SYNC_URL = 'https://meatsgiving-78270-default-rtdb.firebaseio.com';
+/* Fresh start: bump this number (and clear the database) to wipe every guest's saved RSVP,
+   messages and scores from their own device, so old entries don't get re-sent. */
+const DATA_RESET = 1;
 /* ====================================================== */
 
 const $ = s => document.querySelector(s);
@@ -572,6 +575,7 @@ $('#cnew').onclick = () => { $('#cmsg').textContent = ''; drawCaptcha(); };
 $('#relock').onclick = () => { store.set('mg-pass', 0); passed = false; resetGate(); history.replaceState(null, '', '#/'); route(); };
 
 /* ---------- RSVP, guest list, messages, leaderboard ---------- */
+if (store.get('mg-reset', 0) !== DATA_RESET) { ['mg-me', 'mg-best', 'mg-done'].forEach(k => { try { localStorage.removeItem(k); } catch {} }); store.set('mg-reset', DATA_RESET); }
 const Me = Object.assign({ name: '', status: '', n: 1, bring: '', at: 0, s: {}, m: [] }, store.get('mg-me', {}));
 if (!Array.isArray(Me.m)) Me.m = [];
 if (!Me.s || typeof Me.s !== 'object') Me.s = {};
@@ -653,9 +657,9 @@ function renderSocial() {
     const b = el('button'); b.type = 'button'; b.textContent = 'Copy your RSVP to text ' + EVENT.host; b.onclick = () => copyRsvp(b); ln.append(b);
   }
 
-  /* chopping block */
+  /* messages */
   const PL = $('#posts'); PL.innerHTML = '';
-  if (!posts.length) PL.append(el('li', 'empty', 'Nothing on the block yet. Say something.'));
+  if (!posts.length) PL.append(el('li', 'empty', 'No messages yet. Say something.'));
   posts.forEach(({ g, x }) => {
     const li = el('li', 'post'), h = el('div', 'ph'), b = el('b'), t = el('span'), tx = el('p', 'pt');
     b.textContent = g.name; t.textContent = ago(x.at); tx.textContent = x.t; h.append(b, t);
