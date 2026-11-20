@@ -8,7 +8,7 @@ Editable SVGs based on the cream newsprint, red ink, and bold outlines in the ex
 | card-stills | Four illustrated game moments | 400 × 400 |
 | flap-steak | Wing, fork head, fork handle, kitchen wall, repeating ground | 26 × 14, 56 × 110, 20 × 64, 360 × 494, 46 × 46 |
 | cleaver-frenzy | Cutting board | 360 × 540 |
-| sausage-dash | Four run frames, jump, crash, lettuce hedge, sun, cloud, roadside post | Runner 60 × 100, hedge 330 × 40 |
+| sausage-dash | Four run frames, jump, crash, lettuce hedge, sun, cloud, roadside post, smokehouse backdrop | Backdrop 360 × 540, runner 60 × 100, hedge 330 × 40 |
 | prime-cuts | Cow diagram with nine tappable cut shapes | 340 × 210 |
 
 ## Placement notes
@@ -18,5 +18,7 @@ Editable SVGs based on the cream newsprint, red ink, and bold outlines in the ex
 - The fork head has a bottom-facing tip. Rotate the head 180° for a fork rising from the ground. Draw the handle first, stretch it along its length, and overlap the neck end of the head by about 2 px at native size.
 - Anchor the wing near the right end of its canvas, roughly at (22, 7), for flapping.
 - The kitchen wall can repeat along its 360 px width. Repeat the 46 px ground tile at its native width.
-- Each runner frame uses the same 60 × 100 canvas and a bottom-center anchor. The jump frame includes a tucked pose, with vertical travel controlled by the game.
+- The runner faces away toward the horizon. Play run-01 through run-04 in numerical order. Each runner frame uses the same 60 × 100 canvas and a bottom-center anchor. The jump frame includes a tucked pose, with vertical travel controlled by the game.
 - The cow paths have named IDs, labels, and the same `data-i` ordering as the site's cuts array. Both shanks share one path with two subpaths. Inline the SVG or use its paths in the existing diagram to retain per-cut click handling.
+
+- Draw `sausage-dash/smokehouse-backdrop.svg` at (0, 0) on the 360 × 540 canvas. It replaces the sky, sun, cloud, hills, and solid grass fills. Draw the moving road, lane marks, posts, pickups, obstacles, and runner over it. The road meets the horizon at (180, 140). The preview illustrates this stacking order.
