@@ -23,6 +23,15 @@ headline, dek, tagline.
 - **When:** Fri, Nov 27, 2026, 7:00 PM
 - **Where:** 314 S. Medio Dr.
 
+## Crossword
+- Edit the puzzle with `GRID` (`#` = black square) and `CLUES` (keys like `A3`, `D8`) in `index.html`.
+  Numbering and word extents are worked out from the grid.
+- On phones the clue bar and keyboard stay pinned to the bottom and the grid is sized to fit above them.
+  On computers with a mouse the on-screen keyboard is hidden (type on the real keyboard; Enter = next clue,
+  Space = switch direction).
+- Progress and elapsed time are saved on the device until the puzzle is solved. Only each guest's first solve
+  goes on the leaderboard.
+
 ## Captcha photos
 `captcha/` holds 16 photos (8 meat, 8 decoys), cropped square at 320px as WebP, about 400 KB total.
 They're listed in `PHOTOS` right under `EVENT`. Each round shows 9 of them, 3 to 5 of which are meat.
