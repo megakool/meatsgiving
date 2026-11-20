@@ -1,50 +1,46 @@
 # Meatsgiving — project notes
 
-Carried over from the earlier "Meatsgiving event dashboard" chat (Nov 16–20, 2026).
-`index.html` is the full site as published (version 6) at
-https://claude.ai/artifact/GXUi2Ua8geRw1R6DnFADCZ.
+`index.html` is the whole site: one self-contained page with no build step.
 
-## Event details
-Edit the `EVENT` object near the top of the `<script>` in `index.html`.
+## Design
+Rebuilt from the Claude Design project "App redesign and voice refinement"
+(`Meatsgiving Final` for phone, `Meatsgiving Desktop` for 900px and wider).
 
-- **When:** Friday, November 27, 2026, 7:00 PM
+- Cream newsprint, red ink, Gabarito (Google Fonts). Colors are tokens at the top of the `<style>`.
+- **Gate:** one captcha round, "select all images with meat".
+- **Front page:** masthead, "Return of the Meat", one red invitation card, the reply card
+  (shrinks to a confirmation bar after you RSVP), and a tabbed panel for
+  Who's coming / The Chopping Block. On desktop it splits into two columns.
+- **Back page** (`#/back`): four puzzles, four arcade games, leaderboard. Locked until you RSVP.
+- **Game screens** (`#/play/<id>`): Meatle, Cold Cuts, The Meaty Mini, Prime Cuts,
+  Flap Steak, Cleaver Frenzy, Butcher's Match, Sausage Dash.
+- The URL hash tracks the page, so the phone's back button works.
+
+## Edit the party details
+The `EVENT` object at the top of the `<script>`: date, time, address, what to bring,
+headline, dek, tagline.
+
+- **When:** Fri, Nov 27, 2026, 7:00 PM
 - **Where:** 314 S. Medio Dr.
-- **Bring:** An appetite, and a meat or side if you can
 
-## What's on the page
-- **meatCAPTCHA gate** — "I'm not a vegetarian" checkbox, then two rounds:
-  select all images with *meat*, then with *vegetables*. Passing shows
-  "Verified carnivore" and lets the guest in (remembered per device).
-- **Invitation** — price-tag card with date, address, what to bring, and a
-  countdown chip ("N days until the meat sweats").
-- **RSVP** — Going / Maybe / Can't go, name, party size (1–12), what they're bringing.
-  "Who's coming" guest list with head count.
-- **The Chopping Block** — message board. Must RSVP first; 200 chars per post;
-  each guest keeps their 15 most recent; guests can delete their own posts.
-- **The Meat Games (puzzles):** Meatle (5-letter meat Wordle), Cold Cuts
-  (16 words → 4 groups, 3 rotating puzzles), The Meaty Mini (5×5 crossword
-  with solve timer), Prime Cuts (tap the cut on a cow diagram, 9 rounds).
-- **The Meat Arcade:** Flap Steak, Cleaver Frenzy, Butcher's Match (goal 800),
-  Sausage Dash. Sound effects with an on/off toggle.
-- **Leaderboard** — top 10 per game (Flap Steak, Cleaver Frenzy, Butcher's
-  Match, Sausage Dash, Prime Cuts).
-- Games are locked until the guest RSVPs or enters a name.
+## Slots waiting on assets
+Each slot is a config value right under `EVENT`:
+
+1. **`PHOTOS`**: captcha photos. With 9 or more (about half meat, half veg or decoys),
+   the captcha switches from word tiles to photos.
+   Example entry: `{ src: 'captcha/ribeye.jpg', meat: 1, alt: 'Ribeye steak' }`
+2. **`STILLS`**: optional gameplay stills for the arcade cards, e.g. `{ flap: 'stills/flap.jpg' }`.
+   Without them, each card shows a numbered color block.
+3. **`SYNC_URL`**: a Firebase Realtime Database URL. Until it's set, RSVPs, posts and
+   scores stay on each guest's own device. The page tells them so and offers a
+   "copy your RSVP to text the host" button. On claude.ai the page uses the artifact's
+   built-in database instead.
 
 ## Known limitations / open items
-1. **Shared data doesn't work for guests on the claude.ai link.** RSVPs,
-   messages and scores only stay on each guest's own device there. To make them
-   shared, host the page elsewhere (e.g. GitHub Pages from this repo) and set
-   `SYNC_URL` in `index.html` to a free Firebase Realtime Database URL
-   (e.g. `https://your-project-default-rtdb.firebaseio.com`). The page then
-   reads/writes `guests/<id>.json` and polls every 15 s.
-2. **Captcha still uses drawings, not real photos.** Wikimedia rate-limited the
-   download. Options discussed: (a) send 12–20 photos (about half meat, half
-   veg/decoys); (b) retry Wikimedia slowly (needs a credits line);
-   (c) Adobe Stock via the Adobe connector (may cost credits). To use photos, fill
-   the `PHOTOS` array, e.g. `{ src: 'captcha/ribeye.jpg', meat: 1, alt: 'Ribeye steak' }`;
-   with 9 or more it switches over automatically.
-3. Difficulty and sound volume of the arcade games were not tuned by hand —
-   adjust if anything feels too hard, too easy or too loud.
-4. The earlier Wikimedia approval added `commons.wikimedia.org` and
-   `upload.wikimedia.org` to the Default cloud environment's allowed hosts;
-   remove them in environment settings if not wanted.
+- **Hosting.** You plan to use your own domain. Any static host works; the page is one HTML file.
+- **Copy to confirm** (from the design notes): "It will mostly be ignored", "Return of the Meat".
+- **Fonts.** Gabarito stands in for Funday or Widston. Swap it in if you license the real fonts.
+- **Arcade tuning.** Difficulty and sound volume were never tuned by hand.
+- **Wikimedia hosts.** An earlier session added `commons.wikimedia.org` and `upload.wikimedia.org`
+  to the Default cloud environment's allowed hosts. Remove them in the environment settings if
+  you don't want them.
