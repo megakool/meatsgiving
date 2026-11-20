@@ -37,13 +37,17 @@ Each slot is a config value right under `EVENT`:
 
 1. **`STILLS`**: optional gameplay stills for the arcade cards, e.g. `{ flap: 'stills/flap.jpg' }`.
    Without them, each card shows a numbered color block.
-2. **`SYNC_URL`**: a Firebase Realtime Database URL. Until it's set, RSVPs, posts and
-   scores stay on each guest's own device. The page tells them so and offers a
-   "copy your RSVP to text the host" button. On claude.ai the page uses the artifact's
-   built-in database instead.
+## Live site
+- **Hosting:** Render Static Site at https://meatsgiving.onrender.com. It deploys from `main` on every push (publish directory `.`, no build command).
+- **Shared data:** RSVPs, posts and scores are stored in the Firebase Realtime Database at
+  `https://meatsgiving-78270-default-rtdb.firebaseio.com`, set as `SYNC_URL` in `index.html`.
+  Guest entries live under `guests/<id>`. The page polls the database every 15 s.
+- **Firebase rules:** anyone can read `guests`, and anyone can write a guest entry that has a `name`
+  (24 characters or fewer) and a `status`. Nothing else can be written.
+  The site has no logins, so someone technical could edit entries.
 
 ## Known limitations / open items
-- **Hosting.** You plan to use your own domain. Any static host works: upload `index.html` and the `captcha/` folder together.
+- **Domain.** When your domain is ready, add it in Render under Settings → Custom Domains.
 - **Copy to confirm** (from the design notes): "It will mostly be ignored", "Return of the Meat".
 - **Fonts.** Gabarito stands in for Funday or Widston. Swap it in if you license the real fonts.
 - **Arcade tuning.** Difficulty and sound volume were never tuned by hand.
