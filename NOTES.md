@@ -39,7 +39,8 @@ To add or swap one, drop the file in `captcha/` and add a line such as
 - `art/card-stills/butchers-match.svg` and `art/prime-cuts/cow.svg` belong to removed games and are unused.
 
 ## Live site
-- **Hosting:** Render Static Site at https://meatsgiving.onrender.com. It deploys from `main` on every push (publish directory `.`, no build command).
+- **Hosting:** Render Static Site at **https://meatsgiving.org** (GoDaddy DNS: `@` A record and `www` CNAME to Render;
+  `www` redirects to the bare domain). Also reachable at https://meatsgiving.onrender.com. It deploys from `main` on every push (publish directory `.`, no build command).
 - **Shared data:** RSVPs, posts and scores are stored in the Firebase Realtime Database at
   `https://meatsgiving-78270-default-rtdb.firebaseio.com`, set as `SYNC_URL` in `index.html`.
   Guest entries live under `guests/<id>`. The page polls the database every 15 s.
@@ -50,12 +51,11 @@ To add or swap one, drop the file in `captcha/` and add a line such as
 ## Link preview
 - `og.jpg` (1200x630) is the image shown when the link is pasted into a text or chat. `apple-touch-icon.png`
   is the tab and home-screen icon.
-- The preview tags in `<head>` point at `https://meatsgiving.onrender.com/`. **If you move to your own domain,
-  change the `og:url` and `og:image` addresses** to the new domain.
+- The preview tags in `<head>` point at `https://meatsgiving.org/`. If the domain ever changes, update the
+  `og:url` and `og:image` addresses.
 - The preview image shows the date and time. If they change, regenerate it.
 
 ## Known limitations / open items
-- **Domain.** When your domain is ready, add it in Render under Settings → Custom Domains.
 - **Copy to confirm** (from the design notes): "It will mostly be ignored", "Return of the Meat".
 - **Fonts.** Gabarito stands in for Funday or Widston. Swap it in if you license the real fonts.
 - **Arcade tuning.** Difficulty and sound volume were never tuned by hand.
