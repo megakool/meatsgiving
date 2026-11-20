@@ -43,7 +43,7 @@ Each slot is a config value right under `EVENT`:
    built-in database instead.
 
 ## Known limitations / open items
-- **Hosting.** You plan to use your own domain. Any static host works; the page is one HTML file.
+- **Hosting.** You plan to use your own domain. Any static host works: upload `index.html` and the `captcha/` folder together.
 - **Copy to confirm** (from the design notes): "It will mostly be ignored", "Return of the Meat".
 - **Fonts.** Gabarito stands in for Funday or Widston. Swap it in if you license the real fonts.
 - **Arcade tuning.** Difficulty and sound volume were never tuned by hand.
