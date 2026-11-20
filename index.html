@@ -206,6 +206,8 @@ a.pill:hover{color:var(--ink);background:var(--card)}
 .still::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(245,236,217,.16) 0 7px,rgba(245,236,217,.04) 7px 14px)}
 .still img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .still span{position:relative}
+.still.art{padding:0}
+.still.art span{position:absolute;left:0;top:61.25%;width:50%;height:36.5%;display:grid;place-items:center;font-size:24px;line-height:1;letter-spacing:-.02em}
 .arow b{display:block;font:900 22px/1 var(--font);letter-spacing:-.02em}
 .arow small{display:block;font-size:14px;line-height:1.3;color:var(--soft);margin-top:4px}
 .arow .done{display:inline-block;margin-left:6px;vertical-align:3px;transform:none}
@@ -278,6 +280,9 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
 .mini button.cur{background:var(--mustard)}
 .mini button.wrong{color:var(--red);text-decoration:line-through}
 .mini sup{position:absolute;top:3px;left:4px;font:700 10px/1 var(--font)}
+.mini.big{width:100%;max-width:400px;gap:1.5px;border-radius:8px}
+.mini.big button{font-size:clamp(15px,5vw,22px)}
+.mini.big sup{top:2px;left:2px;font-size:clamp(7px,2.2vw,9px)}
 .clue{margin:12px 0 0;border:2.5px solid var(--ink);border-radius:14px;background:var(--steel);color:var(--paper);padding:10px 12px;min-height:58px}
 .clue .label{display:block;margin-bottom:3px}
 .clue b{font-weight:700}
@@ -439,7 +444,7 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
   <p class="dek">Something to do while the brisket rests.</p>
   <div class="lockbar" id="lockbar"><span>Games are for guests. RSVP to play.</span><button type="button" id="lockBtn">RSVP</button></div>
 
-  <div class="sh"><h2>Puzzles</h2><span class="label">New every day</span></div>
+  <div class="sh"><h2>Puzzles</h2><span class="label">Four courses</span></div>
   <div class="puzzles" id="puzzles"></div>
 
   <div class="sh"><h2>The arcade</h2><button type="button" class="label" data-snd></button></div>
@@ -769,9 +774,9 @@ function setBest(id, v) {
   return best[id] || 0;
 }
 const GAMES = [
-  { id: 'meatle', n: '01', name: 'Meatle', blurb: 'The five-letter meat word. Six tries.', how: 'Guess today’s meat word in six tries.', bg: 'var(--red)', fg: 'var(--paper)', label: () => 'No. ' + (DAY % 1000) },
+  { id: 'meatle', n: '01', name: 'Meatle', blurb: 'The five-letter meat word. Six tries.', how: 'Guess the five-letter meat word in six tries.', bg: 'var(--red)', fg: 'var(--paper)' },
   { id: 'cuts', n: '02', name: 'Cold Cuts', blurb: 'Sixteen words, four groups.', how: 'Find four groups of four. Some words fit more than one.', bg: 'var(--mustard)', fg: 'var(--ink)' },
-  { id: 'mini', n: '03', name: 'The Meaty Mini', blurb: 'A five-by-five crossword.', how: 'Tap a square for its clue. Tap again to switch direction.', bg: 'var(--steel)', fg: 'var(--paper)' },
+  { id: 'mini', n: '03', name: 'Meatsgiving Crossword', blurb: 'The Friendsgiving lore edition.', how: 'Tap a square for its clue. Tap it again to switch direction. Enter jumps to the next clue.', bg: 'var(--steel)', fg: 'var(--paper)' },
   { id: 'cow', n: '04', name: 'Prime Cuts', blurb: 'Find the cut on the cow.', how: '', bg: 'var(--herb)', fg: 'var(--paper)' },
   { id: 'flap', arcade: 1, n: '05', name: 'Flap Steak', blurb: 'Tap to fly a steak through a gauntlet of forks.', how: 'Tap to flap. Fly the steak through the forks. The gaps tighten as you go.', bg: 'var(--red)' },
   { id: 'slice', arcade: 1, n: '06', name: 'Cleaver Frenzy', blurb: 'Swipe to slice flying meat. Spare the vegetables.', how: 'Swipe to slice the meat. Three in one swipe is a combo. Dropping a cut or slicing a vegetable costs a life.', bg: 'var(--mustard)' },
@@ -788,7 +793,7 @@ function drawBack() {
       b.type = 'button'; b.style.background = g.bg; b.style.color = g.fg; b.onclick = () => nav('#/play/' + g.id); P.append(b);
     } else {
       const still = STILLS[g.id] ? `<img src="${STILLS[g.id]}" alt="">` : '';
-      const b = el('button', 'arow', `<span class="still" style="background:${g.bg}">${still}<span>${g.n}</span></span><span><b>${g.name}${chip}</b><small>${g.blurb}</small></span>`);
+      const b = el('button', 'arow', `<span class="still${still ? ' art' : ''}" style="background:${g.bg}">${still}<span>${g.n}</span></span><span><b>${g.name}${chip}</b><small>${g.blurb}</small></span>`);
       b.type = 'button'; b.onclick = () => nav('#/play/' + g.id); A.append(b);
     }
   });
@@ -905,49 +910,89 @@ PLAY.cuts = (root, win) => {
   reset(); return {};
 };
 
-/* ---------- The Meaty Mini ---------- */
-const GRID = ['ROAST', 'A#S#A', 'CHARS', 'K#D#T', 'SPARE'];
-const NUMS = { '0,0': 1, '0,2': 2, '0,4': 3, '2,0': 4, '4,0': 5 };
+/* ---------- Meatsgiving Crossword ---------- */
+/* Grid: '#' is a black square. Numbers and word extents are worked out from the grid. */
+const GRID = [
+  '##O##A####',
+  '#EDIBLE##Q',
+  '#T###C###U',
+  '#H#GOOD##I',
+  'RAW##H###P',
+  '#N###O###L',
+  '###MYLES#A',
+  '#######T#S',
+  '######ZACH',
+  '#######N##'
+];
 const CLUES = {
-  A0: ['1 Across', 'Sunday dinner centerpiece'],
-  A2: ['4 Across', 'Blackens on the grill'],
-  A4: ['5 Across', '"___ ribs" (not the baby back kind)'],
-  D0: ['1 Down', 'Ribs and lamb both come in these'],
-  D2: ['2 Down', 'Carne ___'],
-  D4: ['3 Down', 'What the cook sneaks before serving']
+  A3: 'Trace ate one of these and was unresponsive for the rest of Friendsgiving.',
+  A5: 'Cigarettes are ______ for you.',
+  A6: 'For the first few years, all the meat was served mostly...',
+  A7: 'One half of the most talked-about fight that has never happened.',
+  A9: 'Got from Brentwood to Malibu in under five minutes.',
+  D1: 'Almost had intercourse with Gib.',
+  D2: 'Nick Stambler caused ______ to be banned from the first Friendsgiving.',
+  D3: 'One half of the most talked-about fight that has never happened.',
+  D4: 'The TV game that will eventually be played.',
+  D8: 'The name of Eli\'s father.'
 };
+function crosswordWords(G) {
+  const R = G.length, C = G[0].length, open = (r, c) => r >= 0 && r < R && c >= 0 && c < C && G[r][c] !== '#';
+  const nums = {}, words = [], at = {}; let n = 0;
+  for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+    if (!open(r, c)) continue;
+    const a = !open(r, c - 1) && open(r, c + 1), d = !open(r - 1, c) && open(r + 1, c);
+    if (!a && !d) continue; n++; nums[r + ',' + c] = n;
+    [['A', a, 0, 1], ['D', d, 1, 0]].forEach(([dir, ok, dr, dc]) => {
+      if (!ok) return; const cells = []; let rr = r, cc = c;
+      while (open(rr, cc)) { cells.push([rr, cc]); rr += dr; cc += dc; }
+      const w = { dir, n, cells }; words.push(w); cells.forEach(([x, y]) => { at[dir + x + ',' + y] = w; });
+    });
+  }
+  words.sort((x, y) => (x.dir === y.dir ? x.n - y.n : x.dir === 'A' ? -1 : 1));
+  return { R, C, nums, words, at };
+}
 PLAY.mini = (root, win) => {
-  const fill = GRID.map(r => [...r].map(ch => ch === '#' ? '#' : ''));
-  let s = { r: 0, c: 0, d: 'A' }, over = false; const t0 = Date.now();
+  const X = crosswordWords(GRID), fill = GRID.map(r => [...r].map(ch => ch === '#' ? '#' : ''));
+  let s = { r: X.words[0].cells[0][0], c: X.words[0].cells[0][1], d: X.words[0].dir }, over = false; const t0 = Date.now();
   root.innerHTML = `<div class="mini" aria-label="Crossword grid"></div><div class="clue" aria-live="polite"><span class="label"></span><b></b></div><p class="msg" role="status"></p>`;
   const grid = root.querySelector('.mini'), clue = root.querySelector('.clue'), msg = root.querySelector('.msg'), cells = {};
-  const ok = (r, c, d) => d === 'A' ? r % 2 === 0 : c % 2 === 0;
+  grid.style.gridTemplateColumns = `repeat(${X.C},1fr)`; grid.classList.toggle('big', X.C > 6);
+  const word = () => X.at[s.d + s.r + ',' + s.c];
   GRID.forEach((row, r) => [...row].forEach((ch, c) => {
     if (ch === '#') { grid.append(el('i')); return; }
     const b = el('button'); b.type = 'button'; cells[r + ',' + c] = b;
-    b.onclick = () => { if (s.r === r && s.c === c && ok(r, c, 'A') && ok(r, c, 'D')) s.d = s.d === 'A' ? 'D' : 'A'; else { s.r = r; s.c = c; if (!ok(r, c, s.d)) s.d = s.d === 'A' ? 'D' : 'A'; } draw(); };
+    b.onclick = () => {
+      const hasA = !!X.at['A' + r + ',' + c], hasD = !!X.at['D' + r + ',' + c];
+      if (s.r === r && s.c === c && hasA && hasD) s.d = s.d === 'A' ? 'D' : 'A';
+      else { s.r = r; s.c = c; if (!X.at[s.d + r + ',' + c]) s.d = hasA ? 'A' : 'D'; }
+      draw();
+    };
     grid.append(b);
   }));
   root.append(keyboard(k => api.key(k)));
   const chk = el('div', 'btnrow mt', '<button class="btn" type="button">Check my work</button>'); root.append(chk);
   chk.firstChild.onclick = () => { let bad = 0; for (const k in cells) { const [r, c] = k.split(','), w = !!fill[r][c] && fill[r][c] !== GRID[r][c]; cells[k].classList.toggle('wrong', w); bad += w; } if (!over) msg.textContent = bad ? 'Some squares are wrong.' : 'So far so good.'; };
   function draw() {
+    const w = word(), inW = new Set(w ? w.cells.map(([r, c]) => r + ',' + c) : []);
     for (const k in cells) {
       const [r, c] = k.split(',').map(Number), b = cells[k];
-      b.innerHTML = (NUMS[k] ? `<sup>${NUMS[k]}</sup>` : '') + fill[r][c];
-      b.classList.toggle('word', !over && (s.d === 'A' ? r === s.r : c === s.c));
+      b.innerHTML = (X.nums[k] ? `<sup>${X.nums[k]}</sup>` : '') + fill[r][c];
+      b.classList.toggle('word', !over && inW.has(k));
       b.classList.toggle('cur', !over && r === s.r && c === s.c);
       b.setAttribute('aria-label', `Row ${r + 1}, column ${c + 1}${fill[r][c] ? ', ' + fill[r][c] : ', empty'}`);
     }
-    const [n, t] = CLUES[s.d + (s.d === 'A' ? s.r : s.c)]; clue.querySelector('.label').textContent = n; clue.querySelector('b').textContent = t;
+    if (w) { clue.querySelector('.label').textContent = `${w.n} ${w.dir === 'A' ? 'Across' : 'Down'}`; clue.querySelector('b').textContent = CLUES[w.dir + w.n] || ''; }
   }
-  function move(step) { if (s.d === 'A') s.c = clamp(s.c + step, 0, 4); else s.r = clamp(s.r + step, 0, 4); }
+  function step(dir) { const w = word(); if (!w) return; const i = w.cells.findIndex(([r, c]) => r === s.r && c === s.c), j = clamp(i + dir, 0, w.cells.length - 1); [s.r, s.c] = w.cells[j]; }
+  function nextWord() { const i = X.words.indexOf(word()), w = X.words[(i + 1) % X.words.length]; s.d = w.dir; [s.r, s.c] = w.cells.find(([r, c]) => !fill[r][c]) || w.cells[0]; }
   const api = { key(k) {
-    if (over || k === 'ENTER') return;
+    if (over) return;
+    if (k === 'ENTER') { nextWord(); draw(); return; }
     cells[s.r + ',' + s.c].classList.remove('wrong');
-    if (k === 'DEL') { if (!fill[s.r][s.c]) move(-1); fill[s.r][s.c] = ''; cells[s.r + ',' + s.c].classList.remove('wrong'); }
-    else if (/^[A-Z]$/.test(k)) { fill[s.r][s.c] = k; move(1); if (fill[s.r][s.c] === '#') move(1); sfx.key(); } else return;
-    if (fill.every((row, r) => row.join('') === GRID[r])) { over = true; const sec = Math.round((Date.now() - t0) / 1000); msg.textContent = `Clean plate. Solved in ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}.`; win(); }
+    if (k === 'DEL') { if (!fill[s.r][s.c]) step(-1); fill[s.r][s.c] = ''; cells[s.r + ',' + s.c].classList.remove('wrong'); }
+    else if (/^[A-Z]$/.test(k)) { fill[s.r][s.c] = k; step(1); sfx.key(); } else return;
+    if (fill.every((row, r) => row.join('') === GRID[r])) { over = true; const sec = Math.round((Date.now() - t0) / 1000); msg.textContent = `Solved in ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}. You know the lore.`; win(); }
     else msg.textContent = fill.every(row => row.every(x => x)) ? 'Full grid, but something’s off.' : '';
     draw();
   } };
