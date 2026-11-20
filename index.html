@@ -212,7 +212,6 @@ a.pill.red:hover{background:var(--ink);color:var(--paper)}
 .sh h2{margin:0;font:900 28px/1 var(--font);letter-spacing:-.03em}
 .sh .label{letter-spacing:.04em;white-space:nowrap}
 .sh button.label{border:2px solid var(--ink);border-radius:999px;background:transparent;padding:5px 9px}
-.done{background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:999px;padding:3px 7px;font:800 11px/1 var(--font);letter-spacing:.04em;text-transform:uppercase;transform:rotate(4deg)}
 .arcade{margin-top:12px;display:flex;flex-direction:column;gap:10px}
 .arow{width:100%;text-align:left;display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;border:2.5px solid var(--ink);border-radius:18px;padding:8px;background:var(--card);transition:background .12s,opacity .2s}
 .arow:hover{background:var(--paper)}
@@ -224,7 +223,6 @@ a.pill.red:hover{background:var(--ink);color:var(--paper)}
 .still.art span{position:absolute;left:0;top:61.25%;width:50%;height:36.5%;display:grid;place-items:center;font-size:24px;line-height:1;letter-spacing:-.02em}
 .arow b{display:block;font:900 22px/1 var(--font);letter-spacing:-.02em}
 .arow small{display:block;font-size:14px;line-height:1.3;color:var(--soft);margin-top:4px}
-.arow .done{display:inline-block;margin-left:6px;vertical-align:3px;transform:none}
 body.locked .arcade{opacity:.5}
 .lbtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:12px 0 10px;padding-bottom:2px}
 .lbtabs::-webkit-scrollbar{display:none}
@@ -795,7 +793,6 @@ function drawSnd() { document.querySelectorAll('[data-snd]').forEach(b => { b.te
 document.addEventListener('click', e => { if (e.target.closest('[data-snd]')) { Snd.on = !Snd.on; store.set('mg-snd', Snd.on); drawSnd(); sfx.tap(); } });
 
 /* ---------- games: registry + games page ---------- */
-const done = new Set(store.get('mg-done', []));
 const best = store.get('mg-best', {});
 const fmtTime = v => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`;
 /* Crossword: solve time in seconds (lower is better). Only a guest's first solve counts,
@@ -820,9 +817,8 @@ const GAME = Object.fromEntries(GAMES.map(g => [g.id, g]));
 function drawBack() {
   const A = $('#arcade'); A.innerHTML = '';
   GAMES.forEach(g => {
-    const chip = done.has(g.id) ? '<span class="done">Done</span>' : '';
     const still = STILLS[g.id] ? `<img src="${STILLS[g.id]}" alt="">` : '';
-    const b = el('button', 'arow', `<span class="still${still ? ' art' : ''}" style="background:${g.bg}">${still}<span>${g.n}</span></span><span><b>${g.name}${chip}</b><small>${g.blurb}</small></span>`);
+    const b = el('button', 'arow', `<span class="still${still ? ' art' : ''}" style="background:${g.bg}">${still}<span>${g.n}</span></span><span><b>${g.name}</b><small>${g.blurb}</small></span>`);
     b.type = 'button'; b.onclick = () => nav('#/play/' + g.id); A.append(b);
   });
   drawSnd();
@@ -833,7 +829,7 @@ function openGame(id) {
   $('#gTitle').textContent = g.name; $('#gHow').textContent = g.how; $('#gHow').hidden = !g.how;
   $('#sheet').className = 'page narrow game-' + id;
   const body = $('#gBody'); body.innerHTML = ''; currentId = id; show('sheet');
-  current = PLAY[id](body, () => { sfx.win(); done.add(id); store.set('mg-done', [...done]); });
+  current = PLAY[id](body, () => { sfx.win(); });
   drawSnd();
 }
 document.addEventListener('keydown', e => {
