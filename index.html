@@ -472,7 +472,24 @@ const EVENT = {
 };
 /* Captcha photos. With nine or more, the captcha shows photos instead of word tiles.
    Roughly half meat, half vegetables or decoys, e.g. { src: 'captcha/ribeye.jpg', meat: 1, alt: 'Ribeye steak' } */
-const PHOTOS = [];
+const PHOTOS = [
+  { src: 'captcha/prime-rib.webp', meat: 1, alt: 'Prime rib' },
+  { src: 'captcha/grilled-steaks.webp', meat: 1, alt: 'Steaks on the grill' },
+  { src: 'captcha/braised-beef.webp', meat: 1, alt: 'Braised beef' },
+  { src: 'captcha/churrasco.webp', meat: 1, alt: 'Churrasco with chimichurri' },
+  { src: 'captcha/pulled-pork.webp', meat: 1, alt: 'Pulled pork shoulder' },
+  { src: 'captcha/glazed-beef.webp', meat: 1, alt: 'Glazed beef' },
+  { src: 'captcha/sliced-steak.webp', meat: 1, alt: 'Sliced steak' },
+  { src: 'captcha/korean-beef.webp', meat: 1, alt: 'Korean beef' },
+  { src: 'captcha/chickpea-stew.webp', meat: 0, alt: 'Chickpea stew' },
+  { src: 'captcha/black-bean-burger.webp', meat: 0, alt: 'Black bean burger' },
+  { src: 'captcha/pasta.webp', meat: 0, alt: 'Pasta' },
+  { src: 'captcha/arugula-salad.webp', meat: 0, alt: 'Arugula salad' },
+  { src: 'captcha/cucumber-salad.webp', meat: 0, alt: 'Cucumber salad' },
+  { src: 'captcha/crispy-tofu.webp', meat: 0, alt: 'Crispy tofu' },
+  { src: 'captcha/silken-tofu.webp', meat: 0, alt: 'Silken tofu' },
+  { src: 'captcha/avocado-toast.webp', meat: 0, alt: 'Avocado toast' }
+];
 /* Optional gameplay stills for the arcade cards, e.g. { flap: 'stills/flap.jpg' } */
 const STILLS = {};
 /* Shared guest list, messages and scores. On claude.ai the page uses its built-in database.
@@ -516,7 +533,7 @@ function stopGame() { if (current && current.stop) current.stop(); current = nul
 function nav(hash) { if (location.hash !== hash) history.pushState(null, '', hash); route(); }
 function route() {
   const h = location.hash.replace(/^#\/?/, '');
-  if (!passed) { stopGame(); show('gate'); return; }
+  if (!passed) { stopGame(); show('gate'); preloadPhotos(); return; }
   if (h.startsWith('play/')) {
     const id = h.slice(5);
     if (GAME[id]) {
@@ -555,8 +572,11 @@ function resetGate() {
   const c = $('#ccheck'); c.className = 'ccheck'; c.setAttribute('aria-checked', 'false'); c.disabled = false;
   $('#clabel').textContent = "I'm not a vegetarian"; $('#captcha').hidden = true; $('#cmsg').textContent = '';
 }
+let preloaded = false;
+function preloadPhotos() { if (preloaded || PHOTOS.length < 9) return; preloaded = true; PHOTOS.forEach(p => { new Image().src = p.src; }); }
 $('#ccheck').onclick = () => {
   const c = $('#ccheck'); if (c.classList.contains('spin') || c.classList.contains('ok')) return;
+  preloadPhotos();
   c.classList.add('spin'); setTimeout(() => { c.classList.remove('spin'); drawCaptcha(); $('#captcha').hidden = false; $('#captcha').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 850);
 };
 $('#cverify').onclick = () => {
