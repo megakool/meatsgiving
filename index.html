@@ -286,9 +286,11 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
 .ask .label{color:var(--soft)}
 .ask b{display:block;font:900 40px/1.05 var(--font);letter-spacing:-.03em;color:var(--red)}
 .cow{width:100%;display:block;margin-top:8px}
-.cow .cut{fill:var(--card);stroke:var(--ink);stroke-width:2.5;cursor:pointer;transition:fill .15s}
-.cow .cut.found{fill:var(--herb)}
-.cow .cut.miss{fill:var(--mustard)}
+.cow .cut{cursor:pointer;transition:fill .15s}
+.cow .cut:hover{filter:brightness(1.08)}
+.cow > :not(.cut){pointer-events:none}
+.cow .cut.found{fill:var(--herb)!important}
+.cow .cut.miss{fill:var(--mustard)!important}
 .dots{display:flex;gap:5px;justify-content:center;margin:8px 0 0}
 .dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink)}
 .dots i.ok{background:var(--herb)}.dots i.no{background:var(--red)}
@@ -302,7 +304,7 @@ body.locked .puzzles,body.locked .arcade{opacity:.5}
 .m3{position:relative;aspect-ratio:6/7;background:var(--card);border:2.5px solid var(--ink);border-radius:18px;touch-action:none;overflow:hidden;user-select:none;-webkit-user-select:none}
 .pc{position:absolute;left:0;top:0;width:calc(100%/6);height:calc(100%/7);padding:3px;transition:transform .2s cubic-bezier(.3,0,.5,1)}
 .pc span{display:block;width:100%;height:100%;background:var(--paper);border-radius:10px;padding:3px;transition:transform .12s,background .12s}
-.pc svg{width:100%;height:100%;display:block}
+.pc svg,.pc img{width:100%;height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
 .pc.sel span{background:var(--mustard);transform:scale(1.1)}
 .pc.pop span{animation:m3pop .23s forwards}
 .pc.hint span{animation:wig .5s 3}
@@ -491,7 +493,7 @@ const PHOTOS = [
   { src: 'captcha/avocado-toast.webp', meat: 0, alt: 'Avocado toast' }
 ];
 /* Optional gameplay stills for the arcade cards, e.g. { flap: 'stills/flap.jpg' } */
-const STILLS = {};
+const STILLS = { flap: 'art/card-stills/flap-steak.svg', slice: 'art/card-stills/cleaver-frenzy.svg', match: 'art/card-stills/butchers-match.svg', run: 'art/card-stills/sausage-dash.svg' };
 /* Shared guest list, messages and scores. On claude.ai the page uses its built-in database.
    When you host this file yourself, put a Firebase Realtime Database URL here,
    e.g. "https://your-project-default-rtdb.firebaseio.com" */
@@ -964,13 +966,21 @@ const CUTS = [
   ['Flank', ['200,104 226,104 264,108 264,170 200,170'], 'Lean belly cut. Slice against the grain.'],
   ['Shank', ['86,154 114,154 112,200 88,200', '268,154 294,154 292,200 270,200'], 'The legs. Tough until braised for hours.']
 ];
+/* Cow artwork from art/prime-cuts/cow.svg, inlined so each cut stays tappable. */
 const cowSVG = () => `<svg class="cow" viewBox="0 0 340 210" role="group" aria-label="Diagram of a cow">
-  <defs><clipPath id="mgbody"><rect x="62" y="42" width="246" height="112" rx="32"/></clipPath></defs>
-  <path d="M306 62q26 14 16 62" fill="none" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
-  ${CUTS[8][1].map(p => `<polygon class="cut" data-i="8" points="${p}"/>`).join('')}
-  <g clip-path="url(#mgbody)">${CUTS.slice(0, 8).map((c, i) => `<polygon class="cut" data-i="${i}" points="${c[1][0]}"/>`).join('')}</g>
-  <rect x="62" y="42" width="246" height="112" rx="32" fill="none" stroke="var(--ink)" stroke-width="4" pointer-events="none"/>
-  <rect x="14" y="46" width="58" height="58" rx="20" fill="var(--red)" stroke="var(--ink)" stroke-width="4" pointer-events="none"/>
+<path d="M287 59q36-12 38 18t-1 36" fill="none" stroke="#2a1d1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M324 109c-6 2-9 8-9 14 5 3 11 0 13-7 1-3-1-6-4-7Z" fill="#2a1d1a"/>
+<path d="M109 143h19l3 38 8 11v6h-28l-3-10Z" fill="#a13a30" stroke="#2a1d1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M267 143h17l6 37 9 11v7h-26l-6-10Z" fill="#a13a30" stroke="#2a1d1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M91 58C80 48 71 44 62 47L52 40 36 43l-9 13-16 8c-7 4-7 20 2 25l16 3 18-4 22 27 19 3Z" fill="#c8352b" stroke="#2a1d1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M63 51c-3-11-7-15-16-17-1 7 3 12 10 16m-17-6c-1-8-5-13-11-16-2 8 0 13 4 19" fill="#f6deb3" stroke="#2a1d1a" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M64 53c-8-7-16-5-20 1 8 7 16 7 21 2Z" fill="#ed927d" stroke="#2a1d1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 66c4-5 15-5 22-5l2 26-8 4-12-2C6 85 5 72 9 66Z" fill="#e98d7a" stroke="#2a1d1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="16" cy="76" rx="2.2" ry="1.6" fill="#2a1d1a"/>
+<ellipse cx="38" cy="58" rx="2.5" ry="3" fill="#2a1d1a"/>
+<path d="m11 83 11 2" fill="none" stroke="#2a1d1a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="cut-chuck" class="cut" data-i="0" d="M70 53Q94 36 130 43L136 103Q111 101 83 112Q78 96 69 84Z" fill="#cf5347" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-rib" class="cut" data-i="1" d="M130 43Q152 47 172 46L176 108 136 103Z" fill="#e46d5b" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-short-loin" class="cut" data-i="2" d="M172 46L217 44 220 109 176 108Z" fill="#c8352b" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-sirloin" class="cut" data-i="3" d="M217 44L256 41 253 106 220 109Z" fill="#db6959" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-round" class="cut" data-i="4" d="M256 41Q293 39 305 57Q317 77 307 108L291 150 266 155 253 106Z" fill="#bb4639" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-brisket" class="cut" data-i="5" d="M83 112Q111 101 136 103L142 145Q128 149 116 151L91 154Q84 136 83 112Z" fill="#bd4b3c" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-plate" class="cut" data-i="6" d="M136 103L176 108 196 108 200 144Q174 149 142 145Z" fill="#ed927d" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-flank" class="cut" data-i="7" d="M196 108L220 109 253 106 266 155Q254 143 242 142L200 144Z" fill="#dc6953" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path id="cut-shank" class="cut" data-i="8" d="M91 154L116 151 110 181 117 192 117 199 88 199 87 191Z M266 155L291 150 285 180 293 192 293 199 265 199 263 191Z" fill="#d25d48" stroke="#2a1d1a" stroke-width="3.2" stroke-linejoin="round"></path><path d="m90 187-2 5v7h29v-7l-4-5m152 0-2 5 2 7h28v-7l-4-5" fill="none" stroke="#2a1d1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M89 191h27v7H89Zm176 0h27v7h-27Z" fill="#2a1d1a"/>
 </svg>`;
 PLAY.cow = (root, win) => {
   let order, at, res, pick;
@@ -1015,11 +1025,18 @@ const SPRITE = {
 };
 const MEATS = ['steak', 'bacon', 'sausage', 'ribs', 'ham', 'meatball'], VEG = ['broccoli', 'carrot', 'leaf', 'tofu'];
 const sprSvg = n => `<svg viewBox="0 0 48 48" aria-hidden="true">${SPRITE[n]}</svg>`;
-const SPR = {};
+/* Artwork files in art/. Each loads once; if a file is missing, the drawn fallback is used instead. */
+const SPR = {}, ART = {};
+const inlineSpr = n => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="144" height="144">${SPRITE[n]}</svg>`);
 function spr(n) {
-  if (!SPR[n]) { const i = new Image(); i.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="144" height="144">${SPRITE[n]}</svg>`); SPR[n] = i; }
+  if (!SPR[n]) { const i = new Image(); i.onerror = () => { i.onerror = null; i.src = inlineSpr(n); }; i.src = 'art/sprites/' + n + '.svg'; SPR[n] = i; }
   return SPR[n];
 }
+const sprImg = n => `<img src="art/sprites/${n}.svg" alt="" draggable="false" onerror="this.outerHTML=sprSvg('${n}')">`;
+function art(p) { if (!ART[p]) { const i = new Image(); i.src = 'art/' + p; ART[p] = i; } return ART[p]; }
+const ready = i => i.complete && i.naturalWidth > 0;
+/* Draws art file p at (x, y, w, h); returns false if it isn't available, so the caller can draw its fallback. */
+function drawArt(ctx, p, x, y, w, h) { const i = art(p); if (!ready(i)) return false; ctx.drawImage(i, x, y, w, h); return true; }
 function put(ctx, n, x, y, size, rot) { const i = spr(n); if (!i.complete || !i.naturalWidth) return; ctx.save(); ctx.translate(x, y); if (rot) ctx.rotate(rot); ctx.drawImage(i, -size / 2, -size / 2, size, size); ctx.restore(); }
 const rr = (ctx, x, y, w, h, r) => { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); ctx.fill(); ctx.stroke(); };
 function stage(root, id) {
@@ -1062,6 +1079,13 @@ PLAY.flap = (root, win) => {
   function die() { if (mode !== 'play') return; mode = 'dead'; tDead = performance.now(); S.shake = .3; flashT = .25; sfx.bad(); S.burst(X, y, PAL.red, 16); setBest('flap', score); if (score >= 5) win(); }
   S.cv.addEventListener('pointerdown', e => { e.preventDefault(); flap(); });
   function fork(x, edge, tip) {
+    const head = art('flap-steak/fork-head.svg'), handle = art('flap-steak/fork-handle.svg');
+    if (ready(head) && ready(handle)) {
+      const hx = x + PW / 2 - 10;
+      if (tip > edge) { const top = tip - 110; if (top > 0) ctx.drawImage(handle, hx, -4, 20, top + 6); ctx.drawImage(head, x, top, PW, 110); }
+      else { const bot = tip + 110; if (bot < edge) ctx.drawImage(handle, hx, bot - 2, 20, edge - bot + 4); ctx.save(); ctx.translate(x + PW, bot); ctx.rotate(Math.PI); ctx.drawImage(head, 0, 0, PW, 110); ctx.restore(); }
+      return;
+    }
     const d = Math.sign(tip - edge), neck = tip - d * 70;
     ctx.lineWidth = 2.5; ctx.strokeStyle = PAL.ink; ctx.fillStyle = '#d7dde3';
     rr(ctx, x + PW / 2 - 9, Math.min(edge - d * 12, neck), 18, Math.abs(neck - edge) + 20, 6);
@@ -1083,16 +1107,28 @@ PLAY.flap = (root, win) => {
     } else if (mode === 'ready') y = 140 + Math.sin(clock * 4) * 8;
     else if (y + 15 < G) { vy += 1250 * dt; y = Math.min(G - 15, y + vy * dt); }
     S.score(score);
-    ctx.fillStyle = PAL.card; ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(42,29,26,.07)'; ctx.lineWidth = 2; ctx.beginPath();
-    for (let i = 0; i < 11; i++) { const tx = i * 40 - (scroll * .25) % 40; ctx.moveTo(tx, 0); ctx.lineTo(tx, G); } for (let j = 40; j < G; j += 40) { ctx.moveTo(0, j); ctx.lineTo(W, j); } ctx.stroke();
-    ctx.fillStyle = PAL.paper; [[60, 90, 26], [92, 100, 20], [250, 170, 30], [287, 160, 22], [170, 340, 24], [205, 348, 17]].forEach(([a, b, r]) => { ctx.beginPath(); ctx.arc(((a - scroll * .45) % (W + 80) + W + 80) % (W + 80) - 40, b, r, 0, 7); ctx.fill(); });
+    const wall = art('flap-steak/kitchen-wall.svg');
+    if (ready(wall)) { const wx = -((scroll * .3) % W); ctx.drawImage(wall, wx, 0, W, G); ctx.drawImage(wall, wx + W, 0, W, G); }
+    else {
+      ctx.fillStyle = PAL.card; ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = 'rgba(42,29,26,.07)'; ctx.lineWidth = 2; ctx.beginPath();
+      for (let i = 0; i < 11; i++) { const tx = i * 40 - (scroll * .25) % 40; ctx.moveTo(tx, 0); ctx.lineTo(tx, G); } for (let j = 40; j < G; j += 40) { ctx.moveTo(0, j); ctx.lineTo(W, j); } ctx.stroke();
+      ctx.fillStyle = PAL.paper; [[60, 90, 26], [92, 100, 20], [250, 170, 30], [287, 160, 22], [170, 340, 24], [205, 348, 17]].forEach(([a, b, r]) => { ctx.beginPath(); ctx.arc(((a - scroll * .45) % (W + 80) + W + 80) % (W + 80) - 40, b, r, 0, 7); ctx.fill(); });
+    }
     pipes.forEach(p => { fork(p.x, 0, p.c - p.g); fork(p.x, G, p.c + p.g); });
-    ctx.fillStyle = PAL.red; ctx.fillRect(0, G, W, H - G); ctx.fillStyle = PAL.red2;
-    for (let i = -1; i < 10; i++) for (let j = 0; j < 2; j++) ctx.fillRect(i * 46 + (j ? 23 : 0) - scroll % 46, G + j * 23, 23, 23);
-    ctx.fillStyle = PAL.ink; ctx.fillRect(0, G - 2, W, 4);
+    const ground = art('flap-steak/checkered-ground.svg');
+    if (ready(ground)) { for (let i = -1; i < 10; i++) ctx.drawImage(ground, i * 46 - scroll % 46, G - 2, 46, 46); }
+    else {
+      ctx.fillStyle = PAL.red; ctx.fillRect(0, G, W, H - G); ctx.fillStyle = PAL.red2;
+      for (let i = -1; i < 10; i++) for (let j = 0; j < 2; j++) ctx.fillRect(i * 46 + (j ? 23 : 0) - scroll % 46, G + j * 23, 23, 23);
+      ctx.fillStyle = PAL.ink; ctx.fillRect(0, G - 2, W, 4);
+    }
     const rot = clamp(vy / 700, -.5, 1.1); put(ctx, 'steak', X, y, 46, rot);
-    ctx.save(); ctx.translate(X - 8, y + 3); ctx.rotate(rot + (mode === 'dead' ? .9 : Math.sin(clock * (vy < 0 ? 26 : 12)) * .6 - .2)); ctx.fillStyle = PAL.card; ctx.strokeStyle = PAL.ink; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.ellipse(-9, 0, 13, 7, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore();
+    const wing = art('flap-steak/wing.svg');
+    ctx.save(); ctx.translate(X - 8, y + 3); ctx.rotate(rot + (mode === 'dead' ? .9 : Math.sin(clock * (vy < 0 ? 26 : 12)) * .6 - .2));
+    if (ready(wing)) ctx.drawImage(wing, -22 * 1.15, -7 * 1.15, 26 * 1.15, 14 * 1.15);
+    else { ctx.fillStyle = PAL.card; ctx.strokeStyle = PAL.ink; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.ellipse(-9, 0, 13, 7, 0, 0, 7); ctx.fill(); ctx.stroke(); }
+    ctx.restore();
     S.drawFx(dt);
     if (mode === 'play') S.hud(score, W / 2, 64, 44);
     if (flashT) { ctx.fillStyle = `rgba(251,245,232,${flashT * 3})`; ctx.fillRect(0, 0, W, H); }
@@ -1137,9 +1173,11 @@ PLAY.slice = (root, win) => {
     halves.forEach(h => { h.vy += 720 * dt; h.x += h.vx * dt; h.y += h.vy * dt; h.rot += h.vr * dt; }); halves = halves.filter(h => h.y < H + 80);
     const now = performance.now(); trail = trail.filter(p => now - p.t < 190); flash = Math.max(0, flash - dt);
     S.score(score);
-    ctx.fillStyle = PAL.wood; ctx.fillRect(0, 0, W, H); ctx.strokeStyle = PAL.wood2; ctx.lineWidth = 2; ctx.lineCap = 'round';
-    for (let x = 60; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-    ctx.lineWidth = 1.5; grain.forEach(g => { ctx.beginPath(); ctx.moveTo(g.x, g.y); ctx.lineTo(g.x + 2, g.y + g.l); ctx.stroke(); });
+    if (!drawArt(ctx, 'cleaver-frenzy/cutting-board.svg', 0, 0, W, H)) {
+      ctx.fillStyle = PAL.wood; ctx.fillRect(0, 0, W, H); ctx.strokeStyle = PAL.wood2; ctx.lineWidth = 2; ctx.lineCap = 'round';
+      for (let x = 60; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      ctx.lineWidth = 1.5; grain.forEach(g => { ctx.beginPath(); ctx.moveTo(g.x, g.y); ctx.lineTo(g.x + 2, g.y + g.l); ctx.stroke(); });
+    }
     stains.forEach(s => { s.a -= dt * .04; ctx.fillStyle = `rgba(200,53,43,${Math.max(0, s.a)})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.arc(s.x + s.r * .8, s.y + s.r * .5, s.r * .45, 0, 7); ctx.fill(); }); stains = stains.filter(s => s.a > 0);
     halves.forEach(h => { const i = spr(h.name); if (!i.complete) return; ctx.save(); ctx.translate(h.x, h.y); ctx.rotate(h.rot); ctx.rotate(h.rel); ctx.beginPath(); ctx.rect(-48, h.side < 0 ? -48 : 0, 96, 48); ctx.clip(); ctx.rotate(-h.rel); ctx.drawImage(i, -33, -33, 66, 66); ctx.restore(); });
     objs.forEach(o => put(ctx, o.name, o.x, o.y, 66, o.rot));
@@ -1162,7 +1200,7 @@ PLAY.match = (root, win) => {
   const board = root.querySelector('.m3'), msg = root.querySelector('.msg'), again = root.querySelector('.btnrow button');
   const rnd = () => MEATS[Math.floor(Math.random() * MEATS.length)];
   const place = (p, r, c) => { p.r = r; p.c = c; p.el.style.transform = `translate(${c * 100}%,${r * 100}%)`; };
-  function mk(t, r, c, from) { const e = el('div', 'pc', `<span>${sprSvg(t)}</span>`), p = { t, el: e }; board.append(e); e.style.transition = 'none'; place(p, from, c); void e.offsetWidth; e.style.transition = ''; place(p, r, c); return p; }
+  function mk(t, r, c, from) { const e = el('div', 'pc', `<span>${sprImg(t)}</span>`), p = { t, el: e }; board.append(e); e.style.transition = 'none'; place(p, from, c); void e.offsetWidth; e.style.transition = ''; place(p, r, c); return p; }
   const types = () => g.map(row => row.map(p => p ? p.t : null));
   function matchSet(t) {
     const m = new Set();
@@ -1243,8 +1281,9 @@ PLAY.run = (root, win) => {
     px += (lane - px) * Math.min(1, dt * 14);
     S.score(total());
     const sky = ctx.createLinearGradient(0, 0, 0, HZ); sky.addColorStop(0, '#f1d9c0'); sky.addColorStop(1, PAL.card); ctx.fillStyle = sky; ctx.fillRect(0, 0, W, HZ);
-    ctx.fillStyle = PAL.mustard; ctx.strokeStyle = PAL.ink; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(64, 62, 24, 0, 7); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = PAL.card; [[40, 50], [200, 34], [330, 92]].forEach(([cx, cy], i) => { const x = ((cx + clock * (6 + i * 3)) % (W + 100)) - 50; ctx.beginPath(); ctx.ellipse(x, cy, 30, 11, 0, 0, 7); ctx.ellipse(x + 18, cy - 8, 18, 10, 0, 0, 7); ctx.fill(); });
+    if (!drawArt(ctx, 'sausage-dash/sun.svg', 38, 36, 52, 52)) { ctx.fillStyle = PAL.mustard; ctx.strokeStyle = PAL.ink; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(64, 62, 24, 0, 7); ctx.fill(); ctx.stroke(); }
+    const cloud = art('sausage-dash/cloud.svg');
+    ctx.fillStyle = PAL.card; [[40, 50], [200, 34], [330, 92]].forEach(([cx, cy], i) => { const x = ((cx + clock * (6 + i * 3)) % (W + 100)) - 50; if (ready(cloud)) { ctx.drawImage(cloud, x - 34, cy - 20, 80, 29); return; } ctx.beginPath(); ctx.ellipse(x, cy, 30, 11, 0, 0, 7); ctx.ellipse(x + 18, cy - 8, 18, 10, 0, 0, 7); ctx.fill(); });
     ctx.fillStyle = '#6f9c4c'; ctx.beginPath(); ctx.ellipse(70, HZ + 6, 110, 34, 0, 0, 7); ctx.ellipse(300, HZ + 8, 120, 28, 0, 0, 7); ctx.fill();
     ctx.fillStyle = '#8db863'; ctx.fillRect(0, HZ, W, H - HZ); ctx.fillStyle = '#7fab57';
     for (let k = 0; k < 8; k++) { const t0 = ((k / 8 + off) % 1) * 1.3, a = proj(t0), b = proj(t0 + .07); ctx.fillRect(0, a.y, W, b.y - a.y); }
@@ -1255,13 +1294,20 @@ PLAY.run = (root, win) => {
     ctx.strokeStyle = PAL.card;
     for (let k = 0; k < 12; k++) { const t0 = ((k / 12 + off) % 1) * 1.14, q0 = proj(t0), q1 = proj(t0 + .035); [-55, 55].forEach(bx => { ctx.lineWidth = 4 * q0.s; ctx.beginPath(); ctx.moveTo(W / 2 + bx * q0.s, q0.y); ctx.lineTo(W / 2 + bx * q1.s, q1.y); ctx.stroke(); }); }
     ctx.fillStyle = PAL.ink; ctx.fillRect(0, HZ - 2, W, 3);
-    for (let k = 0; k < 4; k++) { const p = proj(((k / 4 + off) % 1) * 1.2); [-1, 1].forEach(sd => { const x = W / 2 + sd * 196 * p.s; ctx.lineWidth = 1.5; ctx.strokeStyle = PAL.ink; ctx.fillStyle = PAL.card; rr(ctx, x - 4 * p.s, p.y - 36 * p.s, 8 * p.s, 36 * p.s, 2); ctx.fillStyle = PAL.red; rr(ctx, x - 5 * p.s, p.y - 40 * p.s, 10 * p.s, 9 * p.s, 2); }); }
+    const post = art('sausage-dash/roadside-post.svg');
+    for (let k = 0; k < 4; k++) { const p = proj(((k / 4 + off) % 1) * 1.2); [-1, 1].forEach(sd => { const x = W / 2 + sd * 196 * p.s; if (ready(post)) { ctx.drawImage(post, x - 9 * p.s, p.y - 42 * p.s, 18 * p.s, 42 * p.s); return; } ctx.lineWidth = 1.5; ctx.strokeStyle = PAL.ink; ctx.fillStyle = PAL.card; rr(ctx, x - 4 * p.s, p.y - 36 * p.s, 8 * p.s, 36 * p.s, 2); ctx.fillStyle = PAL.red; rr(ctx, x - 5 * p.s, p.y - 40 * p.s, 10 * p.s, 9 * p.s, 2); }); }
     things.slice().sort((m, n) => m.t - n.t).forEach(o => { if (o.t < 0) return; const p = proj(o.t); ctx.globalAlpha = Math.min(1, o.t * 8);
-      if (o.hedge) { ctx.fillStyle = '#3d6a2c'; ctx.strokeStyle = PAL.ink; ctx.lineWidth = 2.5; rr(ctx, W / 2 - 166 * p.s, p.y - 22 * p.s, 332 * p.s, 26 * p.s, 10 * p.s); for (let i = 0; i < 6; i++) put(ctx, 'leaf', W / 2 + (-137.5 + i * 55) * p.s, p.y - 26 * p.s, 46 * p.s, (i % 2 ? .25 : -.25)); }
+      if (o.hedge && drawArt(ctx, 'sausage-dash/lettuce-hedge.svg', W / 2 - 166 * p.s, p.y - 40 * p.s, 332 * p.s, 44 * p.s)) {}
+      else if (o.hedge) { ctx.fillStyle = '#3d6a2c'; ctx.strokeStyle = PAL.ink; ctx.lineWidth = 2.5; rr(ctx, W / 2 - 166 * p.s, p.y - 22 * p.s, 332 * p.s, 26 * p.s, 10 * p.s); for (let i = 0; i < 6; i++) put(ctx, 'leaf', W / 2 + (-137.5 + i * 55) * p.s, p.y - 26 * p.s, 46 * p.s, (i % 2 ? .25 : -.25)); }
       else { const x = W / 2 + (o.lane - 1) * 110 * p.s; ctx.fillStyle = 'rgba(42,29,26,.25)'; ctx.beginPath(); ctx.ellipse(x, p.y + 4 * p.s, 24 * p.s, 7 * p.s, 0, 0, 7); ctx.fill(); put(ctx, o.name, x, p.y - (o.meat ? 36 + Math.sin(clock * 6 + o.t * 9) * 5 : 24) * p.s, (o.meat ? 50 : 62) * p.s, o.meat ? Math.sin(clock * 3) * .2 : 0); }
       ctx.globalAlpha = 1; });
     const x = sx(), base = PY - jy, run = mode === 'play' && jy <= 0, k = run ? Math.sin(clock * 14) : 0, lean = lane - px, sh = 1 - Math.min(.6, jy / 180);
     ctx.fillStyle = 'rgba(42,29,26,.25)'; ctx.beginPath(); ctx.ellipse(x, PY + 6, 24 * sh, 7 * sh, 0, 0, 7); ctx.fill();
+    const frame = art('sausage-dash/' + (mode === 'dead' ? 'crash' : jy > 0 ? 'jump' : run ? 'run-0' + (1 + Math.floor(clock * 12) % 4) : 'run-01') + '.svg');
+    ['run-01', 'run-02', 'run-03', 'run-04', 'jump', 'crash'].forEach(n => art('sausage-dash/' + n + '.svg'));
+    if (ready(frame)) {
+      ctx.save(); ctx.translate(x, base + 8); ctx.rotate(lean * .18); ctx.drawImage(frame, -33, -110, 66, 110); ctx.restore();
+    } else {
     ctx.strokeStyle = PAL.ink; ctx.lineCap = 'round'; ctx.lineWidth = 5;
     ctx.beginPath(); if (jy > 0) { ctx.moveTo(x - 7, base - 20); ctx.lineTo(x - 13, base - 8); ctx.moveTo(x + 7, base - 20); ctx.lineTo(x + 13, base - 8); } else { ctx.moveTo(x - 7, base - 20); ctx.lineTo(x - 7 - k * 9, base + 4); ctx.moveTo(x + 7, base - 20); ctx.lineTo(x + 7 + k * 9, base + 4); } ctx.stroke();
     ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x - 14, base - 44); ctx.lineTo(x - 24, base - (jy > 0 ? 58 : 34 + k * 7)); ctx.moveTo(x + 14, base - 44); ctx.lineTo(x + 24, base - (jy > 0 ? 58 : 34 - k * 7)); ctx.stroke();
@@ -1271,6 +1317,7 @@ PLAY.run = (root, win) => {
     ctx.strokeStyle = PAL.ink; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(tx, ty - 15); ctx.lineTo(tx + 2, ty - 21); ctx.stroke();
     [-6, 6].forEach(ex => { ctx.fillStyle = PAL.card; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(tx + ex, ty + 2, 5, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = PAL.ink; ctx.beginPath(); ctx.arc(tx + ex + lean * 2, ty + (mode === 'dead' ? 2 : 1), 2.2, 0, 7); ctx.fill(); });
     ctx.lineWidth = 2; ctx.beginPath(); if (mode === 'dead') ctx.arc(tx, ty + 16, 4, Math.PI, 0); else ctx.arc(tx, ty + 10, 5, .15 * Math.PI, .85 * Math.PI); ctx.stroke();
+    }
     S.drawFx(dt);
     if (mode === 'play') { put(ctx, 'bacon', W - 64, 30, 30); S.hud('×' + bacon, W - 14, 40, 22, 'right'); }
     if (mode === 'play' && dist < 90) S.small('Swipe up to hop the hedges', W / 2, 124, PAL.ink, 700);

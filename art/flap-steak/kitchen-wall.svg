@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="494" viewBox="0 0 360 494">
+<defs><pattern id="wall-grid" width="40" height="38" patternUnits="userSpaceOnUse"><path d="M40 0H0v38" fill="none" stroke="#d7c7ae" stroke-width="2"/>
+</pattern></defs><rect x="0" y="0" width="360" height="494" rx="0" fill="#fbf5e8"/>
+<rect x="0" y="0" width="360" height="494" rx="0" fill="url(#wall-grid)"/>
+<g transform="translate(20 85) scale(0.95)" ><path d="M0 18C1 10 10 6 18 8c6-12 25-10 32 1 9-2 17 4 17 9H0Z" fill="#ede0c9"/>
+</g><g transform="translate(213 152) scale(1.47)" ><path d="M0 18C1 10 10 6 18 8c6-12 25-10 32 1 9-2 17 4 17 9H0Z" fill="#ede0c9"/>
+</g><g transform="translate(105 337) scale(1.08)" ><path d="M0 18C1 10 10 6 18 8c6-12 25-10 32 1 9-2 17 4 17 9H0Z" fill="#ede0c9"/>
+</g><g transform="translate(293 392) scale(0.7)" ><path d="M0 18C1 10 10 6 18 8c6-12 25-10 32 1 9-2 17 4 17 9H0Z" fill="#ede0c9"/>
+</g>
+</svg>
