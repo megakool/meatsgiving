@@ -11,7 +11,7 @@ Rebuilt from the Claude Design project "App redesign and voice refinement"
 - **Front page:** masthead, "Return of the Meat", one red invitation card, the reply card
   (shrinks to a confirmation bar after you RSVP), and a tabbed panel for
   Who's coming / The Chopping Block. On desktop it splits into two columns.
-- **Back page** (`#/back`): one Games list (Meatle, Meatsgiving Crossword, Flappy Meat, Meat Ninja, Meat Dash)
+- **Games page** (`#/games`; old `#/back` links still work): one Games list (Meatle, Meatsgiving Crossword, Flappy Meat, Meat Ninja, Meat Dash)
   and a leaderboard (fastest crossword time, plus high scores for the three arcade games). Locked until you RSVP.
 - **Game screens** (`#/play/<id>`): ids are `meatle`, `mini` (crossword), `flap`, `slice`, `run`.
 - The URL hash tracks the page, so the phone's back button works.

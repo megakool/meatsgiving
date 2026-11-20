@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Meatsgiving</title>
-<meta name="description" content="Our annual night of red meat and good friends. RSVP, then play the back page.">
+<meta name="description" content="Our annual night of red meat and good friends. RSVP, then play the games.">
 <meta name="theme-color" content="#f5ecd9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
 <style>
 /* Meatsgiving — "Return of the Meat" edition.
    Design: cream newsprint, red ink, Gabarito. Phone column up to 430px; at 900px+ the
-   front page splits into two columns and the back page widens. Tokens below. */
+   front page splits into two columns and the games page widens. Tokens below. */
 :root{
   --paper:#f5ecd9; --card:#fbf5e8; --ink:#2a1d1a; --soft:#6b5a50;
   --red:#c8352b; --mustard:#e2a41f; --steel:#4f79a8; --herb:#4f7f3a;
@@ -166,19 +166,24 @@ a.pill:hover{color:var(--ink);background:var(--card)}
 .pt{margin:2px 0 0;text-wrap:pretty;overflow-wrap:anywhere;white-space:pre-wrap}
 .posts .empty{padding:12px 0}
 
-.backlink{display:block;margin-top:28px;border:2.5px solid var(--ink);border-radius:20px;background:var(--paper);overflow:hidden;color:var(--ink);text-decoration:none;transition:transform .12s}
-.backlink:hover{color:var(--ink);transform:translateY(-2px)}
-.stripes{display:grid;grid-template-columns:repeat(4,1fr);height:44px;border-bottom:2.5px solid var(--ink)}
+.gamescard{display:block;margin-top:22px;border:2.5px solid var(--ink);border-radius:20px;background:var(--card);overflow:hidden;color:var(--ink);text-decoration:none;box-shadow:0 5px 0 rgba(42,29,26,.3);transition:transform .12s,box-shadow .12s}
+.gamescard:hover{color:var(--ink);transform:translateY(-2px);box-shadow:0 7px 0 rgba(42,29,26,.3)}
+.gamescard:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(42,29,26,.3)}
+.stripes{display:grid;grid-template-columns:repeat(4,1fr);height:22px;border-bottom:2.5px solid var(--ink)}
 .stripes i+i{border-left:2px solid var(--ink)}
-.backlink .bl{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px}
-.backlink .bl span{display:flex;flex-direction:column;gap:4px}
-.backlink .bl .label{color:var(--red)}
-.backlink .bl b{font:900 24px/1 var(--font);letter-spacing:-.02em}
-.backlink .bl i{font:900 28px/1 var(--font);font-style:normal}
+.gc{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px}
+.gct{display:flex;flex-direction:column;gap:5px;min-width:0}
+.gct .label{color:var(--red)}
+.gct b{font:900 30px/.95 var(--font);letter-spacing:-.03em}
+.gct small{font-size:14px;color:var(--soft);line-height:1.3}
+.go{flex:none;background:var(--red);color:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:12px 16px;font:800 16px/1 var(--font);white-space:nowrap}
+.dateline{align-items:center}
+.pill.red{background:var(--red);color:var(--paper);padding:7px 12px;font-size:12px;letter-spacing:.02em}
+a.pill.red:hover{background:var(--ink);color:var(--paper)}
 .foot{margin-top:34px;padding:16px 0 36px;text-align:center;font-size:14px;color:var(--soft);display:flex;flex-direction:column;gap:4px;align-items:center}
 .foot p{margin:0;font-weight:600}
 
-/* ---------- back page ---------- */
+/* ---------- games page ---------- */
 #back{padding-bottom:40px}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .topbar .k{font:700 12px/1 var(--font);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
@@ -317,7 +322,7 @@ body.locked .arcade{opacity:.5}
 
 <!-- ================= FRONT PAGE ================= -->
 <main id="front" class="page" hidden>
-  <div class="dateline"><span data-edition></span><span>Annual edition</span></div>
+  <div class="dateline"><span data-edition></span><a class="pill red" href="#/games">Play the games →</a></div>
   <h1 class="mast"><span>Meats</span><span>giving</span></h1>
   <div class="rule"><i></i><span id="tagline"></span><i></i></div>
 
@@ -352,6 +357,14 @@ body.locked .arcade{opacity:.5}
         <button type="submit" class="send">Send my RSVP</button>
         <p class="err" id="rHint" role="status" hidden></p>
       </form>
+
+      <a class="gamescard" href="#/games">
+        <span class="stripes"><i style="background:var(--red)"></i><i style="background:var(--mustard)"></i><i style="background:var(--steel)"></i><i style="background:var(--herb)"></i></span>
+        <span class="gc">
+          <span class="gct"><span class="label">Games</span><b>Play the games</b><small id="gcSub">Meatle, the crossword and three arcade games. Top the leaderboard.</small></span>
+          <span class="go">Play →</span>
+        </span>
+      </a>
     </div>
 
     <div>
@@ -376,10 +389,6 @@ body.locked .arcade{opacity:.5}
           </div>
         </div>
       </div>
-      <a class="backlink" href="#/back">
-        <span class="stripes"><i style="background:var(--red)"></i><i style="background:var(--mustard)"></i><i style="background:var(--steel)"></i><i style="background:var(--herb)"></i></span>
-        <span class="bl"><span><span class="label">The back page</span><b>Five games and a leaderboard</b></span><i aria-hidden="true">→</i></span>
-      </a>
     </div>
   </div>
 
@@ -389,14 +398,14 @@ body.locked .arcade{opacity:.5}
   </footer>
 </main>
 
-<!-- ================= BACK PAGE ================= -->
+<!-- ================= GAMES PAGE ================= -->
 <section id="back" class="page" hidden>
-  <div class="topbar"><a class="pill" href="#/">← Front page</a><span class="k">Page 2</span></div>
-  <h1 class="bp-title"><span>The back </span><span>page</span></h1>
+  <div class="topbar"><a class="pill" href="#/">← Front page</a><span class="k">5 games</span></div>
+  <h1 class="bp-title"><span>Games</span></h1>
   <p class="dek">Something to do while the brisket rests.</p>
   <div class="lockbar" id="lockbar"><span>Games are for guests. RSVP to play.</span><button type="button" id="lockBtn">RSVP</button></div>
 
-  <div class="sh"><h2>Games</h2><button type="button" class="label" data-snd></button></div>
+  <div class="sh"><h2>Pick a game</h2><button type="button" class="label" data-snd></button></div>
   <div class="arcade" id="arcade"></div>
 
   <div class="sh"><h2>Leaderboard</h2><span class="label">Top 10</span></div>
@@ -406,7 +415,7 @@ body.locked .arcade{opacity:.5}
 
 <!-- ================= GAME SCREEN ================= -->
 <section id="sheet" class="page narrow" hidden>
-  <div class="topbar"><a class="pill" href="#/back">← Back page</a><span class="k" id="gLabel"></span></div>
+  <div class="topbar"><a class="pill" href="#/games">← All games</a><span class="k" id="gLabel"></span></div>
   <h1 class="gtitle" id="gTitle"></h1>
   <p class="ghow" id="gHow"></p>
   <div id="gBody"></div>
@@ -483,7 +492,7 @@ function show(v) {
   ['gate', 'front', 'back', 'sheet'].forEach(id => { $('#' + id).hidden = id !== v; });
   if (v !== view) window.scrollTo(0, 0);
   view = v;
-  document.title = v === 'sheet' && currentId ? GAME[currentId].name + ' · Meatsgiving' : v === 'back' ? 'The back page · Meatsgiving' : 'Meatsgiving';
+  document.title = v === 'sheet' && currentId ? GAME[currentId].name + ' · Meatsgiving' : v === 'back' ? 'Games · Meatsgiving' : 'Meatsgiving';
 }
 function stopGame() { if (current && current.stop) current.stop(); current = null; currentId = null; }
 function nav(hash) { if (location.hash !== hash) history.pushState(null, '', hash); route(); }
@@ -499,7 +508,7 @@ function route() {
     }
   }
   stopGame();
-  if (h === 'back') { drawBack(); show('back'); return; }
+  if (h === 'games' || h === 'back') { drawBack(); show('back'); return; }
   show('front');
 }
 window.addEventListener('hashchange', route);
@@ -638,7 +647,8 @@ function renderSocial() {
   });
   drawPostHint();
 
-  /* back page */
+  /* games page + front-page games card */
+  $('#gcSub').textContent = Me.name ? 'Meatle, the crossword and three arcade games. Top the leaderboard.' : 'RSVP to unlock Meatle, the crossword and three arcade games.';
   document.body.classList.toggle('locked', !Me.name); $('#lockbar').hidden = !!Me.name;
   drawLB();
 }
@@ -715,7 +725,7 @@ const sfx = {
 function drawSnd() { document.querySelectorAll('[data-snd]').forEach(b => { b.textContent = b.closest('.sh') ? (Snd.on ? 'Sound on' : 'Sound off') : (Snd.on ? 'Sound: on' : 'Sound: off'); b.setAttribute('aria-pressed', Snd.on); }); }
 document.addEventListener('click', e => { if (e.target.closest('[data-snd]')) { Snd.on = !Snd.on; store.set('mg-snd', Snd.on); drawSnd(); sfx.tap(); } });
 
-/* ---------- games: registry + back page ---------- */
+/* ---------- games: registry + games page ---------- */
 const done = new Set(store.get('mg-done', []));
 const best = store.get('mg-best', {});
 const fmtTime = v => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`;
