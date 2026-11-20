@@ -47,6 +47,13 @@ To add or swap one, drop the file in `captcha/` and add a line such as
   (24 characters or fewer) and a `status`. Nothing else can be written.
   The site has no logins, so someone technical could edit entries.
 
+## Link preview
+- `og.jpg` (1200x630) is the image shown when the link is pasted into a text or chat. `apple-touch-icon.png`
+  is the tab and home-screen icon.
+- The preview tags in `<head>` point at `https://meatsgiving.onrender.com/`. **If you move to your own domain,
+  change the `og:url` and `og:image` addresses** to the new domain.
+- The preview image shows the date and time. If they change, regenerate it.
+
 ## Known limitations / open items
 - **Domain.** When your domain is ready, add it in Render under Settings → Custom Domains.
 - **Copy to confirm** (from the design notes): "It will mostly be ignored", "Return of the Meat".
